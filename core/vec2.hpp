@@ -1,13 +1,9 @@
 #pragma once
 
-#include "../expt/proxy.hpp"
-
 class vec2
 {
 public:
-	static double proc(proxy<double>*, void*, double v);
-
-	proxy<double> x, y;
+	double x, y;
 public:
 	vec2(double v = 0);
 	vec2(double x_init, double y_init);

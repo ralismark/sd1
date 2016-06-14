@@ -2,16 +2,11 @@
 
 #include <cmath>
 
-double vec2::proc(proxy<double>*, void*, double v)
-{
-	return v;
-}
-
 vec2::vec2(double v)
-	: x(proc, proc, 0, v), y(proc, proc, 0, v)
+	: x(v), y(v)
 { ; }
 vec2::vec2(double x_init, double y_init)
-	: x(proc, proc, 0, x_init), y(proc, proc, 0, y_init)
+	: x(x_init), y(y_init)
 { ; }
 
 vec2 vec2::operator-() const
@@ -61,36 +56,36 @@ vec2 operator/(double scale, vec2 vec)
 
 vec2& vec2::operator+=(const vec2& other)
 {
-	x = x + other.x;
-	y = x + other.y;
+	x += other.x;
+	y += other.y;
 	return *this;
 }
 
 vec2& vec2::operator-=(const vec2& other)
 {
-	x = x - other.x;
-	y = y - other.y;
+	x -= other.x;
+	y -= other.y;
 	return *this;
 }
 
 vec2& vec2::operator*=(const vec2& other)
 {
-	x = x * other.x;
-	y = y * other.y;
+	x *= other.x;
+	y *= other.y;
 	return *this;
 }
 
 vec2& vec2::operator*=(double scale)
 {
-	x = x * scale;
-	y = y * scale;
+	x *= scale;
+	y *= scale;
 	return *this;
 }
 
 vec2& vec2::operator/=(double scale)
 {
-	x = x / scale;
-	y = y / scale;
+	x /= scale;
+	y /= scale;
 	return *this;
 }
 
