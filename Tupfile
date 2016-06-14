@@ -1,0 +1,6 @@
+cc = gcc
+cflags = -Wall -Werror -pedantic
+
+chain = $(cc) $(cflags)
+
+: foreach src/*.c |> ^ cc %f -o %o ^ $(chain) -c %f -o %o |> build/%B.o {obj}
