@@ -5,7 +5,7 @@
 class vec2
 {
 public:
-	static double proc(double v);
+	static double proc(proxy<double>*, void*, double v);
 
 	proxy<double> x, y;
 public:

@@ -2,16 +2,16 @@
 
 #include <cmath>
 
-double vec2::proc(double v)
+double vec2::proc(proxy<double>*, void*, double v)
 {
 	return v;
 }
 
 vec2::vec2(double v)
-	: x(proc, proc, v), y(proc, proc, v)
+	: x(proc, proc, 0, v), y(proc, proc, 0, v)
 { ; }
 vec2::vec2(double x_init, double y_init)
-	: x(proc, proc, x_init), y(proc, proc, y_init)
+	: x(proc, proc, 0, x_init), y(proc, proc, 0, y_init)
 { ; }
 
 vec2 vec2::operator-() const
