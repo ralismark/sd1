@@ -1,6 +1,7 @@
-cc = gcc
-cflags = -Wall -Werror -pedantic
+commflags = -02 -pipe -Wall -Wextra -pedantic -Werror -Wshadow -m32 -fstack-protextor -fsanitize-undefined-trap-on-error -fstack-check -fwrapv -Wshadow -Wpointer-arith -Wunreachable-code -Wpointer-arith -Wwrite-strings -Wfloat-equal -Wstrict-overflow=5
 
-chain = $(cc) $(cflags)
+cc = gcc $(commflags)
+cxx = g++ $(commflags)
 
-: foreach src/*.c |> ^ cc %f -o %o ^ $(chain) -c %f -o %o |> build/%B.o {obj}
+: foreach src/*.c |> ^ cc %f -o %o ^ $(cc) -c %f -o %o |> build/%B.o {obj}
+: foreach src/*.cpp |> ^ cxx %f -o %o ^ $(cxx) -c %f -o %o |> build/%B.o {obj}
