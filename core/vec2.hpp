@@ -1,13 +1,15 @@
 #pragma once
 
-namspace math {
+#include "../expt/proxy.hpp"
 
-class vec2 {
+class vec2
+{
 public:
-	double x, y;
+	static double proc(double v);
+
+	proxy<double> x, y;
 public:
-	vec2();
-	vec2(double v);
+	vec2(double v = 0);
 	vec2(double x_init, double y_init);
 
 	vec2 operator-() const;
@@ -34,5 +36,3 @@ public:
 	vec2 norm() const;
 	vec2 abs() const;
 };
-
-}
