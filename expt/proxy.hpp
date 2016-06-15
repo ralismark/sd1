@@ -2,7 +2,7 @@ template <class T>
 class proxy
 {
 public:
-	typedef T (*processor)(proxy<T>*, void*, T);
+	typedef T (*processor)(void*, T);
 private:
 	T val;
 	void* ex;
