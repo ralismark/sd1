@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../expt/proxy.hpp"
+#include "proxy.hpp"
 #include "vec2.hpp"
 
 class tvec2
