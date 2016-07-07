@@ -1,7 +1,7 @@
 commflags = -O2 -pipe -Wall -Wextra -pedantic -Werror -Wshadow -m32 -fstack-protector -fsanitize-undefined-trap-on-error -fstack-check -fwrapv -Wshadow -Wpointer-arith -Wunreachable-code -Wpointer-arith -Wwrite-strings -Wfloat-equal -Wstrict-overflow=5
 
 cc = gcc -std=c11 $(commflags)
-cxx = g++ -std=c++11 $(commflags)
+cxx = g++ -std=c++14 $(commflags)
 
 : foreach core/*.c expt/*.c |> ^ cc %f -o %o ^ $(cc) -c %f -o %o |> build/%B.o {obj}
 : foreach core/*.cpp expt/*.cpp |> ^ cxx %f -o %o ^ $(cxx) -c %f -o %o |> build/%B.o {obj}
