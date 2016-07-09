@@ -3,6 +3,8 @@
 #define NEED_BIND_FIRST
 #include "utils.hpp"
 
+// class sig::fn
+
 template <typename... T>
 sig<T...>::fn::fn(fn_type* fun)
 	: parent(0), func(fun), call(fun)
@@ -29,6 +31,8 @@ bool sig<T...>::fn::operator<(const fn& other) const
 		return parent < other.parent;
 	}
 }
+
+// class sig
 
 template <typename... T>
 typename sig<T...>::slot_type sig<T...>::to_slot(slot_func* slot)
@@ -129,4 +133,66 @@ template <typename... T>
 void sig<T...>::operator()(T... args)
 {
 	this->emit(args...);
+}
+
+// class slot_guard
+
+template <typename... T>
+slot_guard<T...>::slot_guard(slot_type slot_init, sig_type* sig_init)
+	: slot(slot_init), sig(sig_init)
+{
+	this->connect(sig);
+}
+
+template <typename... T>
+slot_guard<T...>::slot_guard(slot_func* slot_init, sig_type* sig_init)
+	: slot(sig_type::to_slot(slot_init)), sig(sig_init)
+{
+	this->connect(sig);
+}
+
+template <typename... T>
+template <typename C>
+slot_guard<T...>::slot_guard(C& obj, slot_func* slot_init, sig_type* sig_init)
+	: slot(sig_type::to_slot(obj, slot_init)), sig(sig_init)
+{
+	this->connect(sig);
+}
+
+template <typename... T>
+slot_guard<T...>::~slot_guard()
+{
+	this->disconnect();
+}
+
+template <typename... T>
+void slot_guard<T...>::connect(sig_type& new_sig)
+{
+	this->connect(&new_sig);
+}
+
+template <typename... T>
+void slot_guard<T...>::connect(sig_type* new_sig)
+{
+	this->disconnect();
+	sig = new_sig;
+	if(sig != 0) {
+		con = sig->connect(slot);
+	}
+}
+
+template <typename... T>
+void slot_guard<T...>::disconnect()
+{
+	if(sig != 0) {
+		sig->disconnect(con);
+		sig = 0;
+	}
+}
+
+template <typename... T>
+void slot_guard<T...>::cut()
+{
+	con = 0;
+	sig = 0;
 }

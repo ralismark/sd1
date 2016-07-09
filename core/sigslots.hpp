@@ -83,26 +83,38 @@ class slot_guard
 public: // Statics
 	typedef sig<T...> sig_type;
 	typedef void (slot_func)(T...);
-	typedef std::function<slot_func> slot_type;
+	typedef typename sig_type::slot_type slot_type;
 
 	typedef typename std::set<slot_type>::iterator slot_id;
 private: // Privates
 	slot_type slot;
 
 	sig<T...>* sig;
-	slot_id connection;
+	slot_id con;
+
+	void connect(sig_type* new_sig); // Handles nulls without breaking
 public: // Publics
 	slot_guard() = delete; // Must construct witl slot
 
-	slot_guard(slot_type init, sig_type* sig = 0);
-	slot_guard(slot_func* init, sig_type* sig = 0);
+	slot_guard(slot_type slot_init, sig_type* sig_init = 0);
+	slot_guard(slot_func* slot_init, sig_type* sig_init = 0);
 	template <typename C>
-	slot_guard(C& obj, slot_func* init, sig_type* sig = 0);
+	slot_guard(C& obj, slot_func* slot_init, sig_type* sig_init = 0);
+
+	slot_guard(const slot_guard&) = delete; // No copying!
 
 	~slot_guard(); // Disconnects from signal
 
 	// Connect/Reconnect
-	void connect(sig_type& sig);
+	void connect(sig_type& new_sig);
 	// Disconnect
 	void disconnect();
+
+	// Kills connection without going through sig
+	// This should ONLY be used with dead signals
+	// Live connections cannot be ended after cut
+	// All of the lines here go to the same width
+	//
+	// tl;dr: Only use in emergencies!
+	void cut();
 };
