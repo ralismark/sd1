@@ -6,4 +6,4 @@ feats += -fstack-protector -fsanitize-undefined-trap-on-error -fstack-check -fwr
 
 cxx = g++ -std=c++14 $(commflags) $(warns) $(feats)
 
-: foreach core/*.cpp expt/*.cpp |> ^ cxx %f -o %o ^ $(cxx) -c %f -o %o |> build/%B.o {obj}
+: foreach core/*.cpp |> ^ cxx %f -o %o ^ $(cxx) -c %f -o %o |> build/%B.o {obj}
