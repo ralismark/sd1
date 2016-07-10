@@ -1,9 +1,17 @@
+#define NO_INC_SIGSLOTS_CPP
 #include "sigslots.hpp"
+
+#include <climits>
 
 #define NEED_BIND_FIRST
 #include "utils.hpp"
 
+#include "except.hpp"
+
 // class sig::fn
+
+template <typename... T>
+unsigned long long sig<T...>::fn::mem_fn_cnt = 1;
 
 template <typename... T>
 sig<T...>::fn::fn(fn_type* fun)
@@ -12,9 +20,13 @@ sig<T...>::fn::fn(fn_type* fun)
 
 template <typename... T>
 template <typename C>
-sig<T...>::fn::fn(C& obj, fn_type* fun)
-	: parent(&obj), func(fun), call(bind_first(std_func_type(fun), &obj))
-{ ; }
+sig<T...>::fn::fn(C& obj, void (C::*fun)(T...))
+	: parent(&obj), mem_fn_id(fn::mem_fn_cnt++), call(bind_instance<C, void, T...>(fun, obj))
+{
+	if(fn::mem_fn_cnt == 0) {
+		throw except("reached limit: sig<T...>::fn::mem_fn_cnt wraparound!");
+	}
+}
 
 template <typename... T>
 void sig<T...>::fn::operator()(T... args) const
@@ -25,14 +37,28 @@ void sig<T...>::fn::operator()(T... args) const
 template <typename... T>
 bool sig<T...>::fn::operator<(const fn& other) const
 {
-	if(parent == other.parent) {
+	if(parent != other.parent) {
+		return parent < other.parent;
+	} else if(parent == 0) {
 		return func < other.func;
 	} else {
-		return parent < other.parent;
+		return mem_fn_id < other.mem_fn_id;
 	}
 }
 
+template <typename... T>
+bool sig<T...>::fn::owned_by(void* obj) const
+{
+	return parent == obj;
+}
+
 // class sig
+
+template <typename... T>
+const typename sig<T...>::slot_id sig<T...>::no_id = {};
+
+template <typename... T>
+const typename sig<T...>::slot_type sig<T...>::no_slot = {0};
 
 template <typename... T>
 typename sig<T...>::slot_type sig<T...>::to_slot(slot_func* slot)
@@ -42,7 +68,7 @@ typename sig<T...>::slot_type sig<T...>::to_slot(slot_func* slot)
 
 template <typename... T>
 template <typename C>
-typename sig<T...>::slot_type sig<T...>::to_slot(C& obj, slot_func* slot)
+typename sig<T...>::slot_type sig<T...>::to_slot(C& obj, void (C::*slot)(T...))
 {
 	return fn(obj, slot);
 }
@@ -61,7 +87,7 @@ typename sig<T...>::slot_id sig<T...>::connect(slot_func* slot)
 
 template <typename... T>
 template <typename C>
-typename sig<T...>::slot_id sig<T...>::connect(C& obj, slot_func* slot)
+typename sig<T...>::slot_id sig<T...>::connect(C& obj, void (C::*slot)(T...))
 {
 	return this->connect(sig<T...>::to_slot(obj, slot));
 }
@@ -86,9 +112,13 @@ void sig<T...>::disconnect(slot_func* slot)
 
 template <typename... T>
 template <typename C>
-void sig<T...>::disconnect(C& obj, slot_func* slot)
+void sig<T...>::disconnect(C& obj)
 {
-	this->disconnect(sig<T...>::to_slot(obj, slot));
+	for(const auto& it : slots) {
+		if(it.owned_by(&obj)) {
+			slots.erase(it);
+		}
+	}
 }
 
 template <typename... T>
@@ -115,10 +145,13 @@ typename sig<T...>::slot_id sig<T...>::get_id(slot_func* slot) const
 }
 
 template <typename... T>
-template <typename C>
-typename sig<T...>::slot_id sig<T...>::get_id(C& obj, slot_func* slot) const
+typename sig<T...>::slot_type sig<T...>::get_slot(slot_id slot) const
 {
-	return this->get_id(sig<T...>::to_slot(obj, slot));
+	if(slot == sig<T...>::no_id) {
+		return sig<T...>::no_slot;
+	} else {
+		return *slot;
+	}
 }
 
 template <typename... T>
@@ -153,7 +186,7 @@ slot_guard<T...>::slot_guard(slot_func* slot_init, sig_type* sig_init)
 
 template <typename... T>
 template <typename C>
-slot_guard<T...>::slot_guard(C& obj, slot_func* slot_init, sig_type* sig_init)
+slot_guard<T...>::slot_guard(C& obj, void (C::*slot_init)(T...), sig_type* sig_init)
 	: slot(sig_type::to_slot(obj, slot_init)), sig(sig_init)
 {
 	this->connect(sig);
