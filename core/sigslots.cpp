@@ -11,20 +11,29 @@
 // class sig::fn
 
 template <typename... T>
-unsigned long long sig<T...>::fn::mem_fn_cnt = 1;
+unsigned long long sig<T...>::fn::id_cnt = 1;
 
 template <typename... T>
 sig<T...>::fn::fn(fn_type* fun)
-	: parent(0), func(fun), call(fun)
+	: parent(0), id(0), func(fun), call(fun)
 { ; }
 
 template <typename... T>
 template <typename C>
 sig<T...>::fn::fn(C& obj, void (C::*fun)(T...))
-	: parent(&obj), mem_fn_id(fn::mem_fn_cnt++), call(bind_instance<C, void, T...>(fun, obj))
+	: parent(&obj), id(fn::id_cnt++), func(0), call(bind_instance<C, void, T...>(fun, obj))
 {
-	if(fn::mem_fn_cnt == 0) {
-		throw except("reached limit: sig<T...>::fn::mem_fn_cnt wraparound!");
+	if(fn::id_cnt == 0) {
+		throw except("reached limit: sig<T...>::fn::id_cnt wraparound!");
+	}
+}
+
+template <typename... T>
+sig<T...>::fn::fn(std::function<fn_type> fun)
+	: parent(0), id(fn::id_cnt++), func(0), call(fun)
+{
+	if(fn::id_cnd == 0) {
+		throw except("reached limit: sig<T...>::fn::id_cnt wraparound!");
 	}
 }
 
@@ -37,12 +46,14 @@ void sig<T...>::fn::operator()(T... args) const
 template <typename... T>
 bool sig<T...>::fn::operator<(const fn& other) const
 {
-	if(parent != other.parent) {
+	if(parent != other.parent) { // Different objects
 		return parent < other.parent;
-	} else if(parent == 0) {
+	} else if(parent != 0) { // Same object, compare ids
+		return id < other.id;
+	} else if(id != other.id) { // Different callables
+		return id < other.id;
+	} else { // Both normal functions
 		return func < other.func;
-	} else {
-		return mem_fn_id < other.mem_fn_id;
 	}
 }
 
@@ -90,6 +101,12 @@ template <typename C>
 typename sig<T...>::slot_id sig<T...>::connect(C& obj, void (C::*slot)(T...))
 {
 	return this->connect(sig<T...>::to_slot(obj, slot));
+}
+
+template <typename... T>
+typename sig<T...>::slot_id sig<T...>::connect(std::function<slot_func> func)
+{
+	return this->connect(fn(func));
 }
 
 template <typename... T>
@@ -188,6 +205,13 @@ template <typename... T>
 template <typename C>
 slot_guard<T...>::slot_guard(C& obj, void (C::*slot_init)(T...), sig_type* sig_init)
 	: slot(sig_type::to_slot(obj, slot_init)), sig(sig_init)
+{
+	this->connect(sig);
+}
+
+template <typename... T>
+slot_guard<T...>::slot_guard(std::function<slot_func> func, sig_type* sig_init)
+	: slot(func), sig(sig_init)
 {
 	this->connect(sig);
 }

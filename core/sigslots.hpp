@@ -12,14 +12,12 @@ public: // Statics
 	{
 	public: // Statics
 		typedef void (fn_type)(T...);
-		static unsigned long long mem_fn_cnt; // Differentiates member funtions
+		static unsigned long long id_cnt; // Differentiates member funtions
 	private: // Privates
 		// Mess needed for comparisons
 		void* parent; // Owner of member function, null mean none
-		union {
-			fn_type* func; // Use for function pointer
-			unsigned long long mem_fn_id;
-		};
+		fn_type* func; // Use for function pointer
+		unsigned long long id;
 
 		std::function<fn_type> call; // What actually is called
 	public:
@@ -27,6 +25,7 @@ public: // Statics
 		fn(fn_type* fun); // non-member function
 		template <typename C>
 		fn(C& obj, void (C::*fun)(T...)); // member function
+		fn(std::function<fn_type> fun); // functors
 
 		bool owned_by(void* obj) const; // Compare with parent
 
@@ -37,7 +36,7 @@ public: // Statics
 
 	typedef fn slot_type;
 	typedef void (slot_func)(T...);
-	typedef typename std::multiset<slot_type>::iterator slot_id;
+	typedef typename std::set<slot_type>::iterator slot_id;
 
 	static const slot_id no_id; // Intentionally default initalised
 	static const slot_type no_slot;
@@ -57,6 +56,7 @@ public: // Publics
 	slot_id connect(slot_func* slot); // Non-member functions
 	template <typename C>
 	slot_id connect(C& obj, void (C::*slot)(T...)); // Member functions
+	slot_id connect(std::function<slot_func> func); // Functors
 
 	// Disconnects slot
 	// Slot will no longer receive signals
@@ -107,6 +107,7 @@ public: // Publics
 	slot_guard(slot_func* slot_init, sig_type* sig_init = 0);
 	template <typename C>
 	slot_guard(C& obj, void (C::*slot_init)(T...), sig_type* sig_init = 0);
+	slot_guard(std::function<slot_func> func, sig_type* sig_init = 0);
 
 	slot_guard(const slot_guard&) = delete; // No copying!
 
