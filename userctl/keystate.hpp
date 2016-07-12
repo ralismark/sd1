@@ -5,6 +5,7 @@
 
 namespace userctl
 {
+
 	class keystate
 	{
 	public: // Statics
@@ -21,4 +22,5 @@ namespace userctl
 
 		virtual bool pressed();
 	};
+
 }

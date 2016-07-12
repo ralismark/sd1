@@ -5,6 +5,7 @@
 
 namespace userctl
 {
+
 	class keyinput : public keystate {
 	public: // Statics
 	private: // Vars
@@ -12,7 +13,7 @@ namespace userctl
 		bool is_pressed;
 	public:
 		keyinput(key keycode = key::none);
-		keystate(char keychar);
+		keyinput(char keychar);
 
 		// get new state, update was_pressed
 		void update();
@@ -29,4 +30,5 @@ namespace userctl
 		// Is pressed
 		virtual bool pressed();
 	};
+
 }

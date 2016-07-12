@@ -2,6 +2,7 @@
 
 namespace userctl
 {
+
 	enum struct key {
 		none = -2,
 		unknown = -1,
