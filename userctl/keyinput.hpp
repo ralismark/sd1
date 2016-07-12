@@ -1,6 +1,7 @@
 #pragma once
 
 #include "keystate.hpp"
+#include "defs.hpp"
 
 namespace userctl
 {
@@ -10,7 +11,7 @@ namespace userctl
 		bool was_pressed;
 		bool is_pressed;
 	public:
-		keyinput(keystate::key keycode = keystate::key::none);
+		keyinput(key keycode = key::none);
 		keystate(char keychar);
 
 		// get new state, update was_pressed
