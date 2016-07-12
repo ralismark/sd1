@@ -1,14 +1,13 @@
 #pragma once
 
 #include "core/runtime.hpp"
-#include "defs.hpp"
+#include "keycode.hpp"
 
 namespace userctl
 {
 	class keystate
 	{
 	public: // Statics
-		static key to_keycode(char keychar);
 	private: // Vars
 		key bound_key;
 	public: // Methods

@@ -68,4 +68,7 @@ namespace userctl
 
 		enum_max
 	};
+
+	key to_keycode(char keychar);
+
 }

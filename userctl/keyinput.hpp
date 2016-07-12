@@ -1,7 +1,7 @@
 #pragma once
 
 #include "keystate.hpp"
-#include "defs.hpp"
+#include "keycode.hpp"
 
 namespace userctl
 {
