@@ -32,7 +32,7 @@ template <typename... T>
 sig<T...>::fn::fn(std::function<fn_type> fun)
 	: parent(0), id(fn::id_cnt++), func(0), call(fun)
 {
-	if(fn::id_cnd == 0) {
+	if(fn::id_cnt == 0) {
 		throw except("reached limit: sig<T...>::fn::id_cnt wraparound!");
 	}
 }
