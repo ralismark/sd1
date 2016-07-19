@@ -5,7 +5,6 @@
 
 // All core running libs
 #include "sigslots.hpp"
-#include "except.hpp"
 
 namespace rt
 {

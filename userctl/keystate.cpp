@@ -1,7 +1,7 @@
 #include "keystate.hpp"
 
 #include <keyboard.hpp>
-#include "core/except.hpp"
+#include <string>
 
 namespace userctl
 {
@@ -14,7 +14,7 @@ namespace userctl
 		: bound_key(to_keycode(keychar))
 	{
 		if(bound_key == key::unknown) {
-			throw except("cannot convert `%c' to keycode", keychar);
+			throw except(std::string() + "cannot convert `" + keychar + "' to keycode");
 		}
 	}
 
@@ -27,7 +27,7 @@ namespace userctl
 	{
 		bound_key = to_keycode(keychar);
 		if(bound_key == key::unknown) {
-			throw except("cannot convert `%c' to keycode", keychar);
+			throw except(std::string() + "cannot convert `" + keychar + "' to keycode");
 		}
 	}
 
