@@ -2,11 +2,10 @@
 #include "sigslots.hpp"
 
 #include <climits>
+#include <stdexcept>
 
 #define NEED_BIND_FIRST
 #include "utils.hpp"
-
-#include "except.hpp"
 
 // class sig::fn
 
@@ -24,7 +23,7 @@ sig<T...>::fn::fn(C& obj, void (C::*fun)(T...))
 	: parent(&obj), id(fn::id_cnt++), func(0), call(bind_instance<C, void, T...>(fun, obj))
 {
 	if(fn::id_cnt == 0) {
-		throw except("reached limit: sig<T...>::fn::id_cnt wraparound!");
+		throw std::overflow_error("reached limit: sig<T...>::fn::id_cnt wraparound!");
 	}
 }
 
@@ -33,7 +32,7 @@ sig<T...>::fn::fn(std::function<fn_type> fun)
 	: parent(0), id(fn::id_cnt++), func(0), call(fun)
 {
 	if(fn::id_cnt == 0) {
-		throw except("reached limit: sig<T...>::fn::id_cnt wraparound!");
+		throw std::overflow_error("reached limit: sig<T...>::fn::id_cnt wraparound!");
 	}
 }
 
