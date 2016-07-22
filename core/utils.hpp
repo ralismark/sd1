@@ -45,3 +45,115 @@ std::function<R(T...)> bind_instance(R (C::*f)(T...), C& obj)
 }
 
 #endif // BIND_FIRST
+
+#if defined(NEED_OPERATORS) && !defined(DECL_OPERATORS)
+#undef NEED_OPERATORS
+#define DECL_OPERATORs 1
+
+#include <type_traits>
+
+// Specialise enable_bitwise_ops<T>::value to be true for ops
+//
+// template<> struct enable_bitwise_ops<T> : public std::true_type {};
+//
+// Based on https://www.justsoftwaresolutions.co.uk/cplusplus/using-enum-classes-as-bitfields.html
+
+template <typename T>
+struct enable_bitwise_ops : public std::false_type
+{ };
+
+template <typename T>
+typename std::enable_if<enable_bitwise_ops<T>::value, T>::type
+	operator|(T left, T right)
+{
+	typedef typename std::underlying_type<T>::type under;
+	return static_cast<T>(static_cast<under>(left) | static_cast<under>(right));
+}
+
+template <typename T>
+typename std::enable_if<enable_bitwise_ops<T>::value, T>::type
+	operator&(T left, T right)
+{
+	typedef typename std::underlying_type<T>::type under;
+	return static_cast<T>(static_cast<under>(left) & static_cast<under>(right));
+}
+
+template <typename T>
+typename std::enable_if<enable_bitwise_ops<T>::value, T>::type
+	operator^(T left, T right)
+{
+	typedef typename std::underlying_type<T>::type under;
+	return static_cast<T>(static_cast<under>(left) ^ static_cast<under>(right));
+}
+
+template <typename T>
+typename std::enable_if<enable_bitwise_ops<T>::value, T>::type
+	operator~(T left)
+{
+	typedef typename std::underlying_type<T>::type under;
+	return static_cast<T>(~static_cast<under>(left));
+}
+
+template <typename T>
+typename std::enable_if<enable_bitwise_ops<T>::value, T&>::type
+	operator|=(T& left, const T& right)
+{
+	return left = left | right;
+}
+
+template <typename T>
+typename std::enable_if<enable_bitwise_ops<T>::value, T&>::type
+	operator&=(T& left, const T& right)
+{
+	return left = left & right;
+}
+
+template <typename T>
+typename std::enable_if<enable_bitwise_ops<T>::value, T&>::type
+	operator^=(T& left, const T& right)
+{
+	return left = left ^ right;
+}
+
+// Specialise enable_cmp_ops
+
+template <typename T>
+struct enable_cmp_ops : public std::false_type
+{ };
+
+template <typename T>
+typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
+	operator>(const T& left, const T& right) const
+{
+	return right < left;
+}
+
+template <typename T>
+typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
+	operator==(const T& left, const T& right) const
+{
+	return !(left < right || right > left);
+}
+
+template <typename T>
+typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
+	operator!=(const T& left, const T& right) const
+{
+	return left < right || right < left;
+}
+
+template <typename T>
+typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
+	operator<=(const T& left, const T& right) const
+{
+	return !(right < left);
+}
+
+template <typename T>
+typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
+	operator>=(const T& left, const T& right) const
+{
+	return !(left < right);
+}
+
+#endif // OPERATORS
