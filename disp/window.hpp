@@ -2,6 +2,7 @@
 
 #include <sfml/window.hpp>
 #include "core/runtime.hpp"
+#include "userctl/keycode.hpp"
 
 namespace disp
 {
@@ -10,7 +11,7 @@ namespace disp
 	class window
 	{
 	public: // Statics
-		enum struct event // About the window only
+		enum struct win_event
 		{
 			close,
 
@@ -20,18 +21,29 @@ namespace disp
 			enum_max
 		};
 
-		static const size_t width;
-		static const size_t height;
+		enum struct kbd_event
+		{
+			key_down,
+			key_up,
+
+			enum_max
+		};
+
+		static const size_t width = 800;
+		static const size_t height = 600;
 
 		static window* instance; // One and only instance
 	public: // Vars
-		sf::Window sf_win;
-		sig<int> win_events; // Sends window::event
+		sf::RenderWindow sf_win;
+		sig<window::win_event> win_events; // Sends window::event
+		sig<window::kbd_event> kbd_events;
 	public: // Methods
 		window(const char* name); // Will throw if more than 1 is made
-		void loop();
 		~window();
+
+		void loop();
 	};
+
 	window stdwin = "Main Window";
 
 }
