@@ -1,8 +1,12 @@
-#include "ctl.hpp"
+#define NO_INC_RESCTL_CPP
+#include "resctl.hpp"
+
+#include <exception>
+#include <stdexcept>
 
 template <typename Val, typename Key>
 res_ctl<Val, Key>::res_entry::res_entry(Val* init, int plevel)
-	: res(init), prio(plevel)
+	: res(init, res_entry::noop), prio(plevel)
 { ; }
 
 template <typename Val, typename Key>
@@ -16,39 +20,57 @@ bool res_ctl<Val, Key>::res_entry::operator<(const res_entry& other)
 }
 
 template <typename Val, typename Key>
-res_ctl<Val, Key>::hdl::hdl(res_entry init)
-	: res(init.res)
+void res_ctl<Val, Key>::res_entry::noop(Val*)
 { ; }
+
+template <typename Val, typename Key>
+res_ctl<Val, Key>::~res_ctl()
+{
+	this->cleanup();
+	if(holder.size() > 0) {
+		if(std::uncaught_exception()) {
+			// Stack unwinding from exception, we let that exception propagate
+			return;
+		} else {
+			// Definitely logic error, no bad things happening otherwise
+			throw std::logic_error("resources still loaded when controller destroyed");
+		}
+	}
+}
 
 template <typename Val, typename Key>
 void res_ctl<Val, Key>::preload(Key id)
 {
 	if(!holder.count(id)) {
 		Val* r = this->load(id);
+		if(!r) {
+			throw std::runtime_error("Resource could not be loaded");
+		}
 		holder[id] = r;
 	}
 }
 
 template <typename Val, typename Key>
-typename res_ctl<Val, Key>::hdl res_ctl<Val, Key>::retrieve(Key id)
+std::shared_ptr<Val> res_ctl<Val, Key>::retrieve(Key id)
 {
 	this->preload(id);
-	return holder[id];
+	return holder[id].res;
 }
 
 template <typename Val, typename Key>
 bool res_ctl<Val, Key>::in_use(Key id) const
 {
-	if(!holder.count(id)) {
-		return false;
+	if(holder.count(id)) {
+		return !holder.at(id).res.unique();
 	}
-	return holder[id].res.unique();
+	return false;
 }
 
 template <typename Val, typename Key>
 void res_ctl<Val, Key>::unload(Key id)
 {
-	if(!this->in_use(id) && holder.count(key)) { // If no longer used
+	// Wrapper for the iterator version
+	if(holder.count(id) && holder[id].res.unique()) {
 		this->free(holder[id].res.get());
 		holder.erase(id);
 	}
@@ -57,23 +79,32 @@ void res_ctl<Val, Key>::unload(Key id)
 template <typename Val, typename Key>
 void res_ctl<Val, Key>::cleanup(int n)
 {
-	auto it  = n >= 0 ? holder.begin() : holder.rbegin();
-	auto end = n >= 0 ? holder.end() : holder.rend();
-	n = n > 0 ? n : -n; // Make positive
+	if(n >= 0) {
+		bool uses_cnt = n != 0;
+		for(auto it = holder.begin(); it != holder.end() && (!uses_cnt || n != 0); ) {
+			if(it->second.res.unique()) {
+				if(uses_cnt) {
+					--n;
+				}
+				auto ptr = it++;
+				std::cout << "Clean " << it->first << '\n';
 
-	bool use_cnt = n != 0;
-
-	while(it != end && (!use_cnt || n != 0)) {
-		if(it->res.unique()) { // Unused resources
-			if(use_cnt) {
-				--n;
+				this->unload(ptr->first);
+			} else {
+				++it;
 			}
-			auto ptr = it++; // Stop using invalid iterators
+		}
+	} else {
+		for(auto it = holder.rbegin(); it != holder.rend() && n != 0; ) {
+			if(it->second.res.unique()) {
+				--n;
+				auto ptr = it++; // Avoid invalid iterators
+				std::cout << "Clean " << ptr->first << '\n';
 
-			this->free(ptr->res.get());
-			holder.erase(ptr);
-		} else {
-			++it;
+				this->unload(ptr->first);
+			} else {
+				++it;
+			}
 		}
 	}
 }

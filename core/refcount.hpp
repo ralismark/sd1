@@ -12,8 +12,8 @@ public:
 	refcount(const refcount& ref);
 	refcount(refcount&& ref);
 
-	refocunt& operator=(const refcount& ref);
-	refocunt& operator=(refcount&& ref);
+	refcount& operator=(const refcount& ref);
+	refcount& operator=(refcount&& ref);
 
 	~refcount();
 };

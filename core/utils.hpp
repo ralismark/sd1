@@ -48,15 +48,27 @@ std::function<R(T...)> bind_instance(R (C::*f)(T...), C& obj)
 
 #if defined(NEED_OPERATORS) && !defined(DECL_OPERATORS)
 #undef NEED_OPERATORS
-#define DECL_OPERATORs 1
+#define DECL_OPERATORS 1
 
 #include <type_traits>
 
-// Specialise enable_bitwise_ops<T>::value to be true for ops
+// Specialise enable_feature<T>::value to be true for ops
 //
-// template<> struct enable_bitwise_ops<T> : public std::true_type {};
+//   e.g. template<> struct enable_feature<T> : public std::true_type {};
 //
 // Based on https://www.justsoftwaresolutions.co.uk/cplusplus/using-enum-classes-as-bitfields.html
+
+template <typename T>
+struct enable_enum_cast : public std::false_type
+{ };
+
+template <typename T>
+operator typename std::enable_if<enable_enum_cast<T>::value, typename std::underlying_type<T>::type>::type(T eval)
+{
+	return static_cast<typename std::enable_if<enable_enum_cast<T>::value, typename std::underlying_type<T>::type>::type>(eval);
+}
+
+// Bitwise ops for enums
 
 template <typename T>
 struct enable_bitwise_ops : public std::false_type
@@ -122,36 +134,36 @@ struct enable_cmp_ops : public std::false_type
 { };
 
 template <typename T>
-typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
-	operator>(const T& left, const T& right) const
+typename std::enable_if<enable_cmp_ops<T>::value, bool>::type
+	operator>(const T& left, const T& right)
 {
 	return right < left;
 }
 
 template <typename T>
-typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
-	operator==(const T& left, const T& right) const
+typename std::enable_if<enable_cmp_ops<T>::value, bool>::type
+	operator==(const T& left, const T& right)
 {
 	return !(left < right || right > left);
 }
 
 template <typename T>
-typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
-	operator!=(const T& left, const T& right) const
+typename std::enable_if<enable_cmp_ops<T>::value, bool>::type
+	operator!=(const T& left, const T& right)
 {
 	return left < right || right < left;
 }
 
 template <typename T>
-typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
-	operator<=(const T& left, const T& right) const
+typename std::enable_if<enable_cmp_ops<T>::value, bool>::type
+	operator<=(const T& left, const T& right)
 {
 	return !(right < left);
 }
 
 template <typename T>
-typename std::enable_if<enable_cmp_opd<T>::value, bool>::type
-	operator>=(const T& left, const T& right) const
+typename std::enable_if<enable_cmp_ops<T>::value, bool>::type
+	operator>=(const T& left, const T& right)
 {
 	return !(left < right);
 }

@@ -1,10 +1,10 @@
 #pragma once
 
 #include <functional>
-#include <queue>
 
 // All core running libs
 #include "sigslots.hpp"
+#include "resctl.hpp"
 
 namespace rt
 {
@@ -24,14 +24,14 @@ namespace rt
 
 	// Function to be executed by window loop
 	void loop();
-
+	
 	// Frame-based timing
 	class frame_event
 	{
 	public: // Statics
 		typedef std::function<void(void*)> fn_type;
 	public: // Variables
-		fn_type fn;
+		mutable fn_type fn; // Hack
 		void* data;
 		size_t target_frame;
 	public: // Methods
@@ -39,8 +39,8 @@ namespace rt
 
 		void call() const;
 
-		// Prio-queue: `greatest' at front
-		bool operator<(const frame_event& other);
+		// order for containers
+		bool operator<(const frame_event& other) const;
 	};
 
 	// Exec after n frames

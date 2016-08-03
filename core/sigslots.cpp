@@ -14,7 +14,7 @@ unsigned long long sig<T...>::fn::id_cnt = 1;
 
 template <typename... T>
 sig<T...>::fn::fn(fn_type* fun)
-	: parent(0), id(0), func(fun), call(fun)
+	: parent(0), func(fun), id(0), call(fun)
 { ; }
 
 template <typename... T>
