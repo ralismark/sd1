@@ -1,6 +1,8 @@
 #include "os_api.hpp"
 
+#include <iostream>
 #include <windows.h>
+#include <conio.h>
 
 std::system_error os_lasterr()
 {
@@ -16,8 +18,15 @@ std::system_error os_lasterr()
 	std::system_error err = { ec, msg ? msg : "(unknown)" };
 
 	if(msg != 0) {
-		HeapFree(GetProcessHeap(), msg);
+		HeapFree(GetProcessHeap(), 0, msg);
 	}
 
 	return err;
 }
+
+void hit_prompt()
+{
+	std::clog << "\nPress any key to continue.\n";
+	_getch();
+}
+
