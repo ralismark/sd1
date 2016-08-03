@@ -1,3 +1,5 @@
+#pragma once
+
 #include "gvec.hpp"
 
 #include <initializer_list>
@@ -20,5 +22,13 @@ public:
 
 	void rebind(size_t i, std::function<T(void)> upd = nullptr);
 
+	gvec<T, N> operator+() const;
+	
 	operator gvec<T, N>() const;
 };
+
+#ifndef NO_INC_BVEC_CPP
+#include "bvec.cpp"
+#else
+#undef NO_INC_BVEC_CPP
+#endif

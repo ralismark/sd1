@@ -1,9 +1,11 @@
 #pragma once
 
 #include <initializer_list>
+#include <ostream>
 
 namespace detail
 {
+
 	// Template Metaprogramming Mess
 	// Though not as bad as utils.hpp
 	template <typename T, size_t N>
@@ -41,6 +43,7 @@ namespace detail
 	{
 		struct type { T x; T y; T z; T w; };
 	};
+
 }
 
 template <typename T, size_t N>
@@ -68,20 +71,42 @@ public:
 	gvec<T, N> operator+(gvec<T, N> other) const;
 	gvec<T, N> operator-(gvec<T, N> other) const;
 	gvec<T, N> operator*(gvec<T, N> other) const;
-	gvec<T, N> operator/(gvec<T, N> other) const;
+	// Implementation issues, division is NOT commutative
+	template <typename T, size_t N>
+	friend gvec<T, N> operator/(gvec<T, N> self, const gvec<T, N>& other);
 
 	// single value ops
 	gvec<T, N>& operator*=(const T& other);
 	gvec<T, N>& operator/=(const T& other);
 
+	template <typename T, size_t N>
 	friend gvec<T, N> operator*(gvec<T, N> self, const T& other);
+	template <typename T, size_t N>
 	friend gvec<T, N> operator*(const T& other, gvec<T, N> self);
+	template <typename T, size_t N>
 	friend gvec<T, N> operator/(gvec<T, N> self, const T& other);
-	friend gvec<T, N> operator/(const T& other, gvec<T, N> self);
+
+	//    Makes no sense:
+	// template <typename T, size_t N>
+	// friend gvec<T, N> operator/(const T& other, gvec<T, N> self);
+	bool operator==(const gvec<T, N>& other) const;
+	bool operator!=(const gvec<T, N>& other) const;
 
 	// Access
 	typename detail::access<T, N>::type* operator->();
 
 	T& operator[](size_t n);
 	const T& operator[](size_t n) const;
+
+	template <typename T, size_t N>
+	friend std::ostream& operator<<(std::ostream& os, const gvec<T, N>& gv);
 };
+
+template <typename O, typename... T>
+gvec<O, sizeof...(T)> make_vec(T... vals);
+
+#ifndef NO_INC_GVEC_CPP
+#include "gvec.cpp"
+#else
+#undef NO_INC_GVEC_CPP
+#endif

@@ -129,8 +129,8 @@ public: // Methods
 	// Debug
 	bool verify() const; // true if fine
 
+	template <typename T>
+	friend std::ostream& operator<<(std::ostream& os, const tree<T>& tree);
+
 	operator tree_node() const;
 };
-
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const tree<T>& tree);

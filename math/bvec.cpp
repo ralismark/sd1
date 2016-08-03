@@ -1,6 +1,5 @@
+#define NO_INC_BVEC_CPP
 #include "bvec.hpp"
-
-#include <stdexcept>
 
 template <typename T, size_t N>
 bvec<T, N>::bvec(std::function<T(void)> init)
@@ -49,6 +48,12 @@ void bvec<T, N>::rebind(size_t i, std::function<T(void)> upd)
 }
 
 template <typename T, size_t N>
+gvec<T, N> bvec<T, N>::operator+() const
+{
+	return gvec<T, N>(*this);
+}
+
+template <typename T, size_t N>
 bvec<T, N>::operator gvec<T, N>() const
 {
 	gvec<T, N> ret;
@@ -56,14 +61,4 @@ bvec<T, N>::operator gvec<T, N>() const
 		ret[i] = (*this)[i];
 	}
 	return ret;
-}
-
-int main()
-{
-	bvec<int, 2> v1 = std::function<int(void)>([]() -> int { return 1; });
-	gvec<int, 2> v2;
-	v2 += v1;
-	v2[1] = v1[0];
-	v1.rebind(1, [](){ return 2; });
-	v2[0] = v1->x;
 }

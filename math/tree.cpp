@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <cassert>
 
 template <typename T>
 void dump_node(const typename tree<T>::tree_node& node)
@@ -684,38 +683,3 @@ std::ostream& operator<<(std::ostream& os, const tree<T>& tree)
 }
 
 // }}}
-
-int main()
-{
-	std::cout << std::boolalpha;
-	tree<int> i = 1;
-
-	auto left = i.prepend_child(i.begin(), 2);
-	i.prepend_child(left, 3);
-	i.append_child(left, 4);
-
-	auto right = i.insert_after(left, 5);
-	auto tgt = i.append_child(right, 7);
-	i.insert_before(tgt, 6);
-	std::cout << "-----\n";
-
-	std::cout << i << i.verify() << '\n';
-	std::cout << "-----\n";
-	for(tree<int>::iterator it = i.begin(); it != i.end(); ++it) { }
-	for(tree<int>::iterator it = i.end(); --it != i.begin(); ) { }
-	std::cout << "-----\n";
-
-	tree<int> i2 = i.extract_node(right);
-
-	std::cout << i2 << i2.verify() << '\n';
-
-	std::cout << "-----\n";
-	
-	i.append_child(tgt, i2);
-	i.append_child(tgt, i);
-
-	std::cout << i << i.verify() << '\n';
-	std::cout << "-----\n";
-
-
-}

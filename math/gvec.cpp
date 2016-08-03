@@ -1,3 +1,4 @@
+#define NO_INC_GVEC_CPP
 #include "gvec.hpp"
 
 template <typename T, size_t N>
@@ -78,7 +79,8 @@ gvec<T, N> gvec<T, N>::operator+(gvec<T, N> other) const
 template <typename T, size_t N>
 gvec<T, N> gvec<T, N>::operator-(gvec<T, N> other) const
 {
-	return other -= *this;
+	other -= *this;
+	return -other;
 }
 
 template <typename T, size_t N>
@@ -88,9 +90,9 @@ gvec<T, N> gvec<T, N>::operator*(gvec<T, N> other) const
 }
 
 template <typename T, size_t N>
-gvec<T, N> gvec<T, N>::operator/(gvec<T, N> other) const
+gvec<T, N> operator/(gvec<T, N> self, const gvec<T, N>& other)
 {
-	return other /= *this;
+	return self /= other;
 }
 
 template <typename T, size_t N>
@@ -130,9 +132,20 @@ gvec<T, N> operator*(const T& other, gvec<T, N> self)
 }
 
 template <typename T, size_t N>
-gvec<T, N> operator/(const T& other, gvec<T, N> self)
+bool gvec<T, N>::operator==(const gvec<T, N>& other) const
 {
-	return self /= other;
+	for(size_t i = 0; i < N; ++i) {
+		if(vals[i] != other[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+template <typename T, size_t N>
+bool gvec<T, N>::operator!=(const gvec<T, N>& other) const
+{
+	return !(*this == other);
 }
 
 template <typename T, size_t N>
@@ -153,28 +166,23 @@ T& gvec<T, N>::operator[](size_t n)
 	return vals[n];
 }
 
-int main()
+template <typename T, size_t N>
+std::ostream& operator<<(std::ostream& os, const gvec<T, N>& gv)
 {
-	gvec<int, 2> v1 = 4;            // gvec(T init = T())
-	gvec<int, 2> v2 = {1, 2};       // gvec(std::initializer_list<int> il)
+	os << "[ ";
+	for(size_t i = 0; i < N; ++i) {
+		if(i != 0) {
+			os << ", ";
+		}
+		os << gv[i];
+	}
+	os << " ]";
+	return os;
+}
 
-	v1 = +v1;
-	v1 = -v1;
-
-	v1 += v2;
-	v1 -= v2;
-	v1 *= v2;
-	v1 /= v2;
-
-	v1 = v1 + v2;
-	v1 = v1 - v2;
-	v1 = v1 * v2;
-	v1 = v1 / v2;
-	
-	v1 *= 1;
-	v1 /= 1;
-	v1 = 1 * v1;
-	v1 = 1 * v1;
-
-	v1[1] = v2[2];
+template <typename O, typename... T>
+gvec<O, sizeof...(T)> make_vec(T... vals)
+{
+	gvec<O, sizeof...(T)> gv = {vals...};
+	return gv;
 }
