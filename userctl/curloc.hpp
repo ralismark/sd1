@@ -1,5 +1,7 @@
 #pragma once
 
+#include "math/vec.hpp"
+
 namespace userctl
 {
 

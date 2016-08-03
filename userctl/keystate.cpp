@@ -1,6 +1,7 @@
 #include "keystate.hpp"
 
-#include <keyboard.hpp>
+#include <sfml/window/keyboard.hpp>
+#include <stdexcept>
 #include <string>
 
 namespace userctl
@@ -14,7 +15,7 @@ namespace userctl
 		: bound_key(to_keycode(keychar))
 	{
 		if(bound_key == key::unknown) {
-			throw except(std::string() + "cannot convert `" + keychar + "' to keycode");
+			throw std::logic_error(std::string() + "cannot convert `" + keychar + "' to keycode");
 		}
 	}
 
@@ -27,7 +28,7 @@ namespace userctl
 	{
 		bound_key = to_keycode(keychar);
 		if(bound_key == key::unknown) {
-			throw except(std::string() + "cannot convert `" + keychar + "' to keycode");
+			throw std::logic_error(std::string() + "cannot convert `" + keychar + "' to keycode");
 		}
 	}
 
@@ -42,7 +43,7 @@ namespace userctl
 			return false;
 		}
 
-		return sf::Keyboard::isKeyPressed(bound_key);
+		return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(bound_key));
 	}
 
 }

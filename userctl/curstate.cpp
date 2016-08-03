@@ -1,5 +1,7 @@
 #include "curstate.hpp"
 
+#include <sfml/window/mouse.hpp>
+
 namespace userctl
 {
 
@@ -17,13 +19,13 @@ namespace userctl
 		bound_button = button::none;
 	}
 
-	bool keystate::pressed()
+	bool curstate::pressed()
 	{
-		if(bound_key == button::none) {
+		if(bound_button == button::none) {
 			return false;
 		}
 		
-		return sf::isButtonPressed(bound_button);
+		return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(bound_button));
 	}
 
 }

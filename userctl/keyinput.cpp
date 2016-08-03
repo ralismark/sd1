@@ -1,6 +1,6 @@
 #include "keyinput.hpp"
 
-#include <keyboard.hpp>
+#include <sfml/window/keyboard.hpp>
 
 namespace userctl
 {
@@ -19,7 +19,7 @@ namespace userctl
 		is_pressed = keystate::pressed();
 	}
 
-	void keyinput::update()
+	void keyinput::extend()
 	{
 		is_pressed = keystate::pressed();
 	}
