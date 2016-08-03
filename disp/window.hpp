@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sfml/window.hpp>
+#include <sfml/graphics/renderwindow.hpp>
 #include "core/runtime.hpp"
 #include "userctl/keycode.hpp"
 
@@ -42,6 +42,8 @@ namespace disp
 		~window();
 
 		void loop();
+
+		operator sf::RenderWindow&();
 	};
 
 	window stdwin = "Main Window";

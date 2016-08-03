@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
-#include <font.hpp>
+#include <sfml/graphics/font.hpp>
 
+#define NEED_OPERATORS
 #include "core/utils.hpp"
 
 namespace disp
@@ -36,7 +37,7 @@ namespace disp
 		styles style; // bitmask
 		size_t size;
 		fontface* font;
-		unsigned short color; // 00rrggbb
+		int color; // 00rrggbb
 
 		// About the American spelling:
 		// A lot of programming stuff is designed in the US, and that
@@ -44,7 +45,7 @@ namespace disp
 		// Also, I'm used to the CSS color attribute.
 
 	public: // Methods
-		text_style(fontface* ff = 0, size_t sz = 30, styles st = styles::regular, unsigned short co = 0xffffff);
+		text_style(fontface* ff = 0, size_t sz = 30, styles st = styles::regular, int co = 0xffffff);
 
 		unsigned short set_color(int r, int g, int b);
 		void set_font(fontface* ff);
