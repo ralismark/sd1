@@ -1,4 +1,5 @@
-#define NO_INC_BVEC_CPP
+#pragma once
+
 #include "bvec.hpp"
 
 template <typename T, size_t N>

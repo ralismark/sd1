@@ -94,6 +94,7 @@ public:
 
 	// Access
 	typename detail::access<T, N>::type* operator->();
+	const typename detail::access<T, N>::type* operator->() const;
 
 	T& operator[](size_t n);
 	const T& operator[](size_t n) const;
@@ -105,8 +106,4 @@ public:
 template <typename O, typename... T>
 gvec<O, sizeof...(T)> make_vec(T... vals);
 
-#ifndef NO_INC_GVEC_CPP
-#include "gvec.cpp"
-#else
-#undef NO_INC_GVEC_CPP
-#endif
+#include "gvec.tpp"

@@ -27,8 +27,4 @@ public:
 	operator gvec<T, N>() const;
 };
 
-#ifndef NO_INC_BVEC_CPP
-#include "bvec.cpp"
-#else
-#undef NO_INC_BVEC_CPP
-#endif
+#include "bvec.tpp"

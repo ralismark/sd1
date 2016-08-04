@@ -1,4 +1,5 @@
-#define NO_INC_GVEC_CPP
+#pragma once
+
 #include "gvec.hpp"
 
 template <typename T, size_t N>
@@ -150,6 +151,12 @@ bool gvec<T, N>::operator!=(const gvec<T, N>& other) const
 
 template <typename T, size_t N>
 typename detail::access<T, N>::type* gvec<T, N>::operator->()
+{
+	return &access;
+}
+
+template <typename T, size_t N>
+const typename detail::access<T, N>::type* gvec<T, N>::operator->() const
 {
 	return &access;
 }
