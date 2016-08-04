@@ -1,4 +1,5 @@
-#define NO_INC_RESCTL_CPP
+#pragma once
+
 #include "resctl.hpp"
 
 #include <exception>

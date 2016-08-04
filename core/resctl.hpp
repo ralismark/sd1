@@ -37,8 +37,4 @@ public:
 	void cleanup(int n = 0); // 0 means all, >0 is low prio items, <0 is high prio items
 };
 
-#ifndef NO_INC_RESCTL_CPP
 #include "resctl.cpp"
-#else
-#undef NO_INC_RESCTL_CPP
-#endif

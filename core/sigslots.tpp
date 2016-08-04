@@ -1,4 +1,5 @@
-#define NO_INC_SIGSLOTS_CPP
+#pragma once
+
 #include "sigslots.hpp"
 
 #include <climits>

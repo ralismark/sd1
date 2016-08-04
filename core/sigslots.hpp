@@ -127,8 +127,4 @@ public: // Publics
 	void cut();
 };
 
-#ifndef NO_INC_SIGSLOTS_CPP
-#include "sigslots.cpp"
-#else
-#undef NO_INC_SIGSLOTS_CPP
-#endif
+#include "sigslots.tpp"
