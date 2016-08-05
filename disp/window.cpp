@@ -30,4 +30,9 @@ namespace disp
 		return sf_win;
 	}
 
+	sf::RenderWindow* window::operator->()
+	{
+		return &sf_win;
+	}
+
 }

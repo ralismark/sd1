@@ -44,8 +44,9 @@ namespace disp
 		void loop();
 
 		operator sf::RenderWindow&();
+		sf::RenderWindow* operator->();
 	};
 
-	window stdwin = "Main Window";
+	window stdwin = {"Main Window"};
 
 }
