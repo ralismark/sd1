@@ -187,6 +187,17 @@ std::ostream& operator<<(std::ostream& os, const gvec<T, N>& gv)
 	return os;
 }
 
+template <typename T, size_t N>
+template <typename C>
+gvec<typename std::enable_if<std::is_convertible<T, C>::value, C>::type, N> gvec<T, N>::cast() const
+{
+	gvec<C, N> out;
+	for(size_t i = 0; i < N; ++i) {
+		out[i] = vals[i];
+	}
+	return out;
+}
+
 template <typename O, typename... T>
 gvec<O, sizeof...(T)> make_vec(T... vals)
 {

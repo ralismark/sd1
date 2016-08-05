@@ -2,6 +2,7 @@
 
 #include <initializer_list>
 #include <ostream>
+#include <type_traits>
 
 namespace detail
 {
@@ -101,9 +102,12 @@ public:
 
 	template <typename T, size_t N>
 	friend std::ostream& operator<<(std::ostream& os, const gvec<T, N>& gv);
+
+	template <typename C>
+	gvec<typename std::enable_if<std::is_convertible<T, C>::value, C>::type, N> cast() const;
 };
 
 template <typename O, typename... T>
 gvec<O, sizeof...(T)> make_vec(T... vals);
 
-#include "gvec.tpp"
+// #include "gvec.tpp"
