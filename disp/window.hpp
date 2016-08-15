@@ -38,11 +38,16 @@ namespace disp
 		sf::RenderWindow sf_win;
 		sig<window::win_event> win_events; // Sends window::event
 		sig<window::kbd_event> kbd_events;
+
+		bool open;
 	public: // Methods
 		window(const char* name); // Will throw if more than 1 is made
 		~window();
 
 		void loop();
+		void close();
+
+		bool is_open();
 
 		operator sf::RenderWindow&();
 		sf::RenderWindow* operator->();

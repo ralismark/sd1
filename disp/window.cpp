@@ -9,15 +9,20 @@ namespace disp
 
 	window::window(const char* name)
 		: sf_win(sf::VideoMode(window::width, window::height), name, sf::Style::Close)
+		, open(true)
 	{
 		if(window::instance != 0) {
 			throw std::logic_error("Cannot create more than 1 instance of disp::window");
 		}
 		window::instance = this;
+
+		sf_win.setFramerateLimit(60);
+		sf_win.setKeyRepeatEnabled(false);
 	}
 
 	window::~window()
 	{
+		this->close();
 		window::instance = 0;
 	}
 
@@ -25,6 +30,17 @@ namespace disp
 	{
 		rt::loop();
 		sf_win.display();
+	}
+
+	void window::close()
+	{
+		sf_win.close();
+		open = false;
+	}
+
+	bool window::is_open()
+	{
+		return open;
 	}
 
 	window::operator sf::RenderWindow&()
