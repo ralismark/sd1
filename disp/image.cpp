@@ -1,5 +1,8 @@
 #include "image.hpp"
 
+#include <stdexcept>
+#include <sfml/graphics/sprite.hpp>
+
 namespace disp
 {
 
@@ -69,6 +72,58 @@ namespace disp
 	}
 
 	image::operator sf::Image&()
+	{
+		return resource;
+	}
+
+	texture* texture::load(const image& img, rect<size_t> region)
+	{
+		sf::Rect<int> area = { region->x1, region->y1, region->w, region->h };
+
+		texture* res = new texture();
+		if(res->resource.loadFromImage(img.resource, area)) {
+			return res;
+		} else {
+			delete res;
+			return 0;
+		}
+	}
+
+	void texture::free(texture* res)
+	{
+		delete res;
+	}
+
+	texture::texture()
+	{
+		resource.setSmooth(false);
+		resource.setRepeated(true);
+	}
+
+	texture::texture(const image& img, rect<size_t> region)
+		: texture() // default settings
+	{
+		sf::Rect<int> area = { region->x1, region->y1, region->w, region->h };
+
+		if(!resource.loadFromImage(img.resource, area)) {
+			throw std::runtime_error("Could not load image");
+		}
+	}
+
+	texture::texture(const sf::Texture& tex)
+		: resource(tex)
+	{
+		resource.setSmooth(false);
+		resource.setRepeated(true);
+	}
+
+	vec2i texture::size() const
+	{
+		auto sz = resource.getSize();
+		return make_vec<int>(sz.x, sz.y);
+	}
+
+	texture::operator sf::Texture&()
 	{
 		return resource;
 	}

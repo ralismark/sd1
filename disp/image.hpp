@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <sfml/graphics/image.hpp>
+#include <sfml/graphics/texture.hpp>
 
+#include "math/rect.hpp"
 #include "math/vec.hpp"
 
 namespace disp
@@ -45,6 +48,23 @@ namespace disp
 		vec2i size() const;
 
 		operator sf::Image&();
+	};
+
+	class texture
+	{
+	public: // statics
+		static texture* load(const image& img, rect<size_t> region = rect<size_t>()); // load subregion of image
+		static void free(texture* res);
+	public: // Variables
+		sf::Texture resource;
+	public:
+		texture(); // blank
+		texture(const image& img, rect<size_t> region = rect<size_t>()); // subregion
+		texture(const sf::Texture& tex); // copy from existing
+
+		vec2i size() const;
+
+		operator sf::Texture&();
 	};
 
 }
