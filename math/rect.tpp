@@ -5,7 +5,7 @@
 template <typename T>
 rect<T>::rect(const T& w, const T& h)
 	: ac(
-		zero,  zero,
+		T(),  T(),
 		w,     h,
 		w,     h,
 		w / 2, h / 2

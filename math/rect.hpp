@@ -8,8 +8,6 @@ template <typename T>
 class rect
 {
 public: // Statics
-	static const T zero = T();
-
 #pragma clang diagnostic push
 
 #pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
