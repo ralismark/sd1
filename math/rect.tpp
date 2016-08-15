@@ -10,6 +10,7 @@ rect<T>::rect()
 		T(), T(),
 		T(), T()
 	    ), dirty(false)
+	, retain_size(false), retain_center(false)
 { ; }
 
 template <typename T>
@@ -20,6 +21,7 @@ rect<T>::rect(const T& w, const T& h)
 		w,     h,
 		w / 2, h / 2
 	    ), dirty(true)
+	, retain_size(false), retain_center(false)
 {
 	this->fix();
 }
@@ -37,6 +39,7 @@ rect<T>::rect(const T& ox, const T& oy, const T& w, const T& h)
 		w,          h,
 		ox + w / 2, oy + h / 2
 	    ), dirty(true)
+	, retain_size(false), retain_center(false)
 {
 	this->fix();
 }
@@ -49,16 +52,27 @@ rect<T>::rect(const gvec<T, 2>& o, const gvec<T, 2>& sz)
 template <typename T>
 rect<T>::rect(const rect<T>& other)
 	: ac(other.ac), dirty(true)
+	, retain_size(other.retain_size), retain_center(other.retain_center) // For fixing
 {
 	this->fix();
+	retain_size = retain_center = false;
 }
 
 template <typename T>
 rect<T>& rect<T>::operator=(const rect<T>& other)
 {
+	bool old_retain_size = retain_size;
+	bool old_retain_center = retain_center;
+
+	retain_size = other.retain_size;
+	retain_cetner = other.retain_center;
+
 	dirty = other.dirty;
 	ac = other.ac;
 	this->fix();
+
+	retain_size = old_retain_size;
+	retain_center = old_retain_center;
 
 	return *this;
 }
@@ -80,10 +94,27 @@ rect<T>& rect<T>::fix()
 			ac.y1 = ac.y2;
 			ac.y2 = tmp;
 		}
+		if(ac.w < 0) {
+			ac.w = -ac.w;
+		}
+		if(ac.h < 0) {
+			ac.h = -ac.h;
+		}
 
-		// Adjust values
-		ac.size = ac.max - ac.min;
-		ac.center = ac.min + ac.size / 2;
+		// fix size
+		if(retain_size) {
+			ac.max = ac.min + ac.size;
+		} else {
+			ac.size = ac.max - ac.min;
+		}
+
+		// fix center
+		if(retain_center) {
+			ac.min = ac.center - ac.size / T(2);
+			ac.max = ac.center + ac.size / T(2);
+		} else {
+			ac.center = ac.min + ac.size / T(2);
+		}
 	}
 	return *this;
 }
