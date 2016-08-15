@@ -45,6 +45,7 @@ namespace disp
 		~window();
 
 		void loop();
+		void dispatch(); // Sends events
 		void close();
 
 		bool is_open();

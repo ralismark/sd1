@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include <sfml/window/event.hpp>
+
 #include <stdexcept>
 
 namespace disp
@@ -30,6 +32,33 @@ namespace disp
 	{
 		rt::loop();
 		sf_win.display();
+	}
+
+	void window::dispatch()
+	{
+		sf::Event event;
+		while(sf_win.pollEvent(event)) {
+			switch(event.type) {
+			case sf::Event::Closed:
+				win_events(win_event::close);
+				this->close();
+				break;
+			case sf::Event::LostFocus:
+				win_events(win_event::lose_focus);
+				break;
+			case sf::Event::GainedFocus:
+				win_events(win_event::gain_focus);
+				break;
+			case sf::Event::KeyPressed:
+				kbd_events(kbd_event::key_down);
+				break;
+			case sf::Event::KeyReleased:
+				kbd_events(kbd_event::key_up);
+				break;
+			default:
+				; // We don't care about the other events right now
+			}
+		}
 	}
 
 	void window::close()
