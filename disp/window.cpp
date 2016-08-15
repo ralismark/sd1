@@ -35,4 +35,23 @@ namespace disp
 		return &sf_win;
 	}
 
+	sf::Color as_color(int argb)
+	{
+		sf::Color c = {
+			        (argb & (0xff << 16)) >> 16, // red
+			        (argb & (0xff <<  8)) >>  8, // green
+			        (argb & (0xff <<  0)) >>  0, // blue
+			0xff - ((argb & (0xff << 24)) >> 24) };
+		return c;
+	}
+
+	int as_int_color(sf::Color co)
+	{
+		int red = (co.r & 0xff) << 16;
+		int green = (co.g & 0xff) << 8;
+		int blue = (co.b & 0xff) << 0;
+		int alpha = 0xff - ((co.a & 0xff) << 24);
+		return red | green | blue | alpha;
+	}
+
 }

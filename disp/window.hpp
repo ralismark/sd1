@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sfml/graphics/renderwindow.hpp>
+#include <sfml/graphics/color.hpp>
 #include "core/runtime.hpp"
 #include "userctl/keycode.hpp"
 
@@ -48,5 +49,8 @@ namespace disp
 	};
 
 	window stdwin = {"Main Window"};
+
+	sf::Color as_color(int argb);
+	int as_int_color(sf::Color co);
 
 }
