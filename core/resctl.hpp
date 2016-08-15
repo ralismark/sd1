@@ -37,4 +37,4 @@ public:
 	void cleanup(int n = 0); // 0 means all, >0 is low prio items, <0 is high prio items
 };
 
-#include "resctl.cpp"
+#include "resctl.tpp"
