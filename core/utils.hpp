@@ -58,16 +58,6 @@ std::function<R(T...)> bind_instance(R (C::*f)(T...), C& obj)
 //
 // Based on https://www.justsoftwaresolutions.co.uk/cplusplus/using-enum-classes-as-bitfields.html
 
-template <typename T>
-struct enable_enum_cast : public std::false_type
-{ };
-
-template <typename T>
-operator typename std::enable_if<enable_enum_cast<T>::value, typename std::underlying_type<T>::type>::type(T eval)
-{
-	return static_cast<typename std::enable_if<enable_enum_cast<T>::value, typename std::underlying_type<T>::type>::type>(eval);
-}
-
 // Bitwise ops for enums
 
 template <typename T>

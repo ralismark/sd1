@@ -9,7 +9,7 @@
 namespace rt
 {
 
-	size_t frame_no = 0; // at 30fps, int won't overflow until running for about 2 years
+	extern size_t frame_no; // at 30fps, int won't overflow until running for about 2 years
 
 	// Sig order:
 	// 1. frame       (user input, window events, etc.)
@@ -20,7 +20,7 @@ namespace rt
 	// 6. frame_end   (end stuff?)
 	//    (SFML does framerate limiting)
 
-	sig<> frame, frame_early, frame_late, render, post_render, frame_end;
+	extern sig<> frame, frame_early, frame_late, render, post_render, frame_end;
 
 	// Function to be executed by window loop
 	void loop();

@@ -39,9 +39,14 @@ namespace userctl
 		return was_pressed != is_pressed;
 	}
 
-	bool keyinput::pressed()
+	bool keyinput::pressed() const
 	{
 		return is_pressed;
+	}
+
+	keyinput::operator bool() const
+	{
+		return this->pressed();
 	}
 
 }

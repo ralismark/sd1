@@ -1,9 +1,16 @@
-commflags = -O2 -I.
+cxx += clang -std=c++14  -fms-compatibility-version=19
+cflags += -Wall -Wextra -pedantic -O2 -D_CRT_SECURE_NO_WARNINGS -fcxx-exceptions
 
-warns += -Wall -Wextra -pedantic -Werror
+inc += -I.
+inc += -isystem external
 
-includes += -isystem external
+!cxx = |> ^ building <<%o>> ^ $(cxx) $(cflags) $(inc) -c %f -o %o |>
+# !cxx = |> ^ building <<%o>> ^ cl /EHsc /W4 /c %f /Fo%o |>
 
-cxx = clang -std=c++14 $(commflags) $(warns) $(includes)
 
-: foreach core/*.cpp |> ^ cxx %f -o %o ^ $(cxx) -c %f -o %o |> build/%B.o {obj}
+#   Debug commands
+# !cxx = |> ^ piping <<%o>> ^ cat %f > %o |>
+# !cxx = |> ^ touching <<%o>> ^ touch %o |>
+
+: foreach core\*.cpp debug\*.cpp disp\*.cpp math\*.cpp userctl\*.cpp world\*.cpp |> !cxx |> build\%B.o {obj}
+: {obj} |> ^ creating <<%o>> ^ llvm-ar rs %o %f |> lib.a

@@ -134,3 +134,5 @@ public: // Methods
 
 	operator tree_node() const;
 };
+
+#include "tree.tpp"

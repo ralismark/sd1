@@ -39,6 +39,10 @@ namespace
 namespace rt
 {
 
+	size_t frame_no = 0;
+	
+	sig<> frame, frame_early, frame_late, render, post_render, frame_end;
+
 	frame_event::frame_event(size_t target, fn_type fn_init, void* data_init)
 		: fn(fn_init), data(data_init), target_frame(target)
 	{ ; }

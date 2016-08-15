@@ -110,4 +110,4 @@ public:
 template <typename O, typename... T>
 gvec<O, sizeof...(T)> make_vec(T... vals);
 
-// #include "gvec.tpp"
+#include "gvec.tpp"

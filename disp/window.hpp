@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sfml/graphics/renderwindow.hpp>
+#include <sfml/graphics/color.hpp>
 #include "core/runtime.hpp"
 #include "userctl/keycode.hpp"
 
@@ -37,16 +38,25 @@ namespace disp
 		sf::RenderWindow sf_win;
 		sig<window::win_event> win_events; // Sends window::event
 		sig<window::kbd_event> kbd_events;
+
+		bool open;
 	public: // Methods
 		window(const char* name); // Will throw if more than 1 is made
 		~window();
 
 		void loop();
+		void dispatch(); // Sends events
+		void close();
+
+		bool is_open();
 
 		operator sf::RenderWindow&();
 		sf::RenderWindow* operator->();
 	};
 
-	window stdwin = {"Main Window"};
+	extern window stdwin;
+
+	sf::Color as_color(int argb);
+	int as_int_color(sf::Color co);
 
 }

@@ -37,13 +37,18 @@ namespace userctl
 		bound_key = key::none;
 	}
 
-	bool keystate::pressed()
+	bool keystate::pressed() const
 	{
 		if(bound_key == key::none) {
 			return false;
 		}
 
 		return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(bound_key));
+	}
+
+	keystate::operator bool() const
+	{
+		return this->pressed();
 	}
 
 }

@@ -28,7 +28,9 @@ namespace userctl
 		bool moved();
 
 		// Is pressed
-		virtual bool pressed();
+		virtual bool pressed() const;
+
+		operator bool() const;
 	};
 
 }

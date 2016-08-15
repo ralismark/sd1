@@ -1,10 +1,14 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <sfml/graphics/font.hpp>
+#include <sfml/graphics/text.hpp>
 
 #define NEED_OPERATORS
 #include "core/utils.hpp"
+
+#include "math/vec.hpp"
 
 namespace disp
 {
@@ -12,14 +16,15 @@ namespace disp
 	class fontface
 	{
 	public:  // Statics
-		static fontface load(std::string path); // May change to name -> path map
+		static fontface* load(std::string path); // May change to name -> path map
+		static void free(fontface* res);
 	public: // Variables
-		sf::Font font;
+		sf::Font resource;
 	public:  // Methods
 		fontface(); // Load default font
 		fontface(const sf::Font& res); // Copy font
-		fontface(std::string path); // From path
 		// TODO: Add loading of fontfaces from memory or streams
+		operator sf::Font&();
 	};
 
 	class text_style // helper with fontface for sf::Text
@@ -36,7 +41,7 @@ namespace disp
 	public: // Variables
 		styles style; // bitmask
 		size_t size;
-		fontface* font;
+		std::shared_ptr<fontface> font;
 		int color; // 00rrggbb
 
 		// About the American spelling:
@@ -45,11 +50,13 @@ namespace disp
 		// Also, I'm used to the CSS color attribute.
 
 	public: // Methods
+		text_style(std::shared_ptr<fontface> ff);
 		text_style(fontface* ff = 0, size_t sz = 30, styles st = styles::regular, int co = 0xffffff);
 
-		unsigned short set_color(int r, int g, int b);
-		void set_font(fontface* ff);
+		operator sf::Text() const;
 	};
+
+	vec2 draw_text(const text_style& ts, vec2 p, const char* str);
 
 }
 

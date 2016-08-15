@@ -11,9 +11,8 @@ namespace hr
 		LARGE_INTEGER time;
 		if(!QueryPerformanceCounter(&time)) {
 			throw os_lasterr();
-		} else {
-			return time.QuadPart;
 		}
+		return time.QuadPart;
 	}
 
 	count_t res()
@@ -21,9 +20,8 @@ namespace hr
 		LARGE_INTEGER res;
 		if(!QueryPerformanceFrequency(&res)) {
 			throw os_lasterr();
-		} else {
-			return time.QuadPart;
 		}
+		return res.QuadPart;
 	}
 
 }

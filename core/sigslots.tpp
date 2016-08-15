@@ -145,7 +145,7 @@ void sig<T...>::disconnect_all()
 }
 
 template <typename... T>
-typename sig<T...>::slot_id sig<T...>::get_id(sig<T...>::slot_type slot) const
+typename sig<T...>::slot_id sig<T...>::get_id(slot_type slot) const
 {
 	slot_id id = slots.find(slot);
 	if(id == slots.end()) {
