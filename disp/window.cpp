@@ -5,6 +5,8 @@
 namespace disp
 {
 
+	window* window::instance = 0;
+
 	window::window(const char* name)
 		: sf_win(sf::VideoMode(window::width, window::height), name, sf::Style::Close)
 	{
@@ -34,6 +36,8 @@ namespace disp
 	{
 		return &sf_win;
 	}
+
+	window stdwin = {"Main Window"};
 
 	sf::Color as_color(int argb)
 	{

@@ -48,7 +48,7 @@ namespace disp
 		sf::RenderWindow* operator->();
 	};
 
-	window stdwin = {"Main Window"};
+	extern window stdwin;
 
 	sf::Color as_color(int argb);
 	int as_int_color(sf::Color co);
