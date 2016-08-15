@@ -12,9 +12,10 @@ namespace disp
 	class fontface
 	{
 	public:  // Statics
-		static fontface load(std::string path); // May change to name -> path map
+		static fontface* load(std::string path); // May change to name -> path map
+		static void free(fontface* res);
 	public: // Variables
-		sf::Font font;
+		sf::Font resource;
 	public:  // Methods
 		fontface(); // Load default font
 		fontface(const sf::Font& res); // Copy font

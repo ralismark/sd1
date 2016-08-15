@@ -3,23 +3,29 @@
 namespace disp
 {
 
-	fontface fontface::load(std::string path)
+	fontface* fontface::load(std::string path)
 	{
-		sf::Font font;
-		if(font.loadFromFile(path)) {
-			return fontface(font);
+		fontface* res = new fontface();
+		if(res->resource.loadFromFile(path)) {
+			return res;
 		} else {
 			// Change to throw?
-			return fontface();
+			delete res;
+			return 0;
 		}
 	}
 
+	void fontface::free(fontface* res)
+	{
+		delete res;
+	}
+
 	fontface::fontface()
-		: font()
+		: resource()
 	{ ; }
 
 	fontface::fontface(const sf::Font& res)
-		: font(res)
+		: resource(res)
 	{ ; }
 
 	fontface::fontface(std::string path)
