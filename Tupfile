@@ -13,4 +13,4 @@ inc += -isystem external
 # !cxx = |> ^ touching <<%o>> ^ touch %o |>
 
 : foreach core\*.cpp debug\*.cpp disp\*.cpp math\*.cpp userctl\*.cpp world\*.cpp |> !cxx |> build\%B.o {obj}
-: {obj} |> ^ creating <<%o>> ^ llvm-ar rs %o %f |> lib.a
+: {obj} |> ^ creating <<%o>> ^ llvm-ar rs %o %f |> build\lib.a
