@@ -15,10 +15,11 @@ namespace userctl
 		curstate(button b = button::none);
 
 		void rebind(button b);
-
 		void unbind();
 
-		virtual bool pressed();
+		virtual bool pressed() const;
+
+		operator bool() const;
 	};
 
 }

@@ -19,13 +19,18 @@ namespace userctl
 		bound_button = button::none;
 	}
 
-	bool curstate::pressed()
+	bool curstate::pressed() const
 	{
 		if(bound_button == button::none) {
 			return false;
 		}
 		
 		return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(bound_button));
+	}
+	
+	curstate::operator bool() const
+	{
+		return this->pressed();
 	}
 
 }
