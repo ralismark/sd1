@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <sfml/graphics/sprite.hpp>
 
+#include "window.hpp"
+
 namespace disp
 {
 
@@ -126,6 +128,17 @@ namespace disp
 	texture::operator sf::Texture&()
 	{
 		return resource;
+	}
+
+	void draw_texture(const texture& tex, vec2 p, vec2 scale)
+	{
+		sf::Sprite sprite;
+
+		sprite.setTexture(tex.resource);
+		sprite.setPosition(p->x, p->y);
+		sprite.setScale(scale->x, scale->y);
+
+		stdwin->draw(sprite);
 	}
 
 }
