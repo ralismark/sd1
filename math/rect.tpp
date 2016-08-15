@@ -3,6 +3,16 @@
 #include "rect.hpp"
 
 template <typename T>
+rect<T>::rect()
+	: ac(
+		T(), T(),
+		T(), T(),
+		T(), T(),
+		T(), T()
+	    ), dirty(false)
+{ ; }
+
+template <typename T>
 rect<T>::rect(const T& w, const T& h)
 	: ac(
 		T(),  T(),
@@ -10,7 +20,9 @@ rect<T>::rect(const T& w, const T& h)
 		w,     h,
 		w / 2, h / 2
 	    ), dirty(true)
-{ ; }
+{
+	this->fix();
+}
 
 template <typename T>
 rect<T>::rect(const gvec<T, 2>& sz)
@@ -25,7 +37,9 @@ rect<T>::rect(const T& ox, const T& oy, const T& w, const T& h)
 		w,          h,
 		ox + w / 2, oy + h / 2
 	    ), dirty(true)
-{ ; }
+{
+	this->fix();
+}
 
 template <typename T>
 rect<T>::rect(const gvec<T, 2>& o, const gvec<T, 2>& sz)
@@ -33,17 +47,20 @@ rect<T>::rect(const gvec<T, 2>& o, const gvec<T, 2>& sz)
 { ; }
 
 template <typename T>
-rect<T>::rect(const rect& other)
+rect<T>::rect(const rect<T>& other)
 	: ac(other.ac), dirty(true)
 {
 	this->fix();
 }
 
 template <typename T>
-rect<T>& rect<T>::operator=(rect other)
+rect<T>& rect<T>::operator=(const rect<T>& other)
 {
-	ac = other.fix().ac;
-	dirty = false;
+	dirty = other.dirty;
+	ac = other.ac;
+	this->fix();
+
+	return *this;
 }
 
 template <typename T>
