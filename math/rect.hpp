@@ -77,4 +77,4 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const rect<T>& r);
 };
 
-// #include "rect.tpp"
+#include "rect.tpp"
