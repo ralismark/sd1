@@ -5,6 +5,7 @@ goto :main
 goto :eof
 
 
+
 :main
 
 	set "tmpfile=%tmp%\-out-build-"
@@ -58,7 +59,7 @@ goto :eof
 :force
 
 	echo:Force rebuilding
-	for /R %%i in (core\* debug\* disp\* math\* userctl\* world\*) do @touch "%%i"
+	for /R %%i in (core\* debug\* disp\* math\* userctl\*) do @touch "%%i"
 	echo:
 
 	goto :build
