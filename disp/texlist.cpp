@@ -29,6 +29,17 @@ namespace disp
 		return real_resource = list[tex];
 	}
 
+	texlist::res_ptr texlist::next()
+	{
+		auto it = list.find(selected);
+		++it;
+		if(it == list.end()) {
+			return this->shift(0);
+		} else {
+			return this->shift(it->first);
+		}
+	}
+
 	texlist::res_ptr texlist::set(id tex, res_ptr res)
 	{
 		list[tex] = res;

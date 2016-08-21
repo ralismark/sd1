@@ -27,6 +27,8 @@ namespace disp
 		texlist(std::initializer_list<res_ptr> il);
 
 		res_ptr shift(id tex);
+		res_ptr next();
+
 		res_ptr set(id tex, res_ptr res); // can add
 		res_ptr set(id tex, texture* res);
 		void erase(id tex); // erase 0 is to set to nullptr
