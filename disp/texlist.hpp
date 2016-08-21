@@ -21,12 +21,17 @@ namespace disp
 		res_ptr real_resource;
 		id selected;
 		std::map<id, res_ptr> list;
+
 	public: // methods
+		texlist();
 		texlist(std::initializer_list<res_ptr> il);
 
 		res_ptr shift(id tex);
 		res_ptr set(id tex, res_ptr res); // can add
-		void erase(id tex);
+		res_ptr set(id tex, texture* res);
+		void erase(id tex); // erase 0 is to set to nullptr
+
+		id state() const;
 
 		operator res_ptr() const;
 		operator const texture&() const;
