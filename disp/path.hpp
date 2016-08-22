@@ -11,8 +11,6 @@ namespace disp
 	// different to resources
 	class path
 	{
-	private: // variables
-		size_t cnt;
 	public: // variables
 		sf::ConvexShape resource;
 	public: // methods
@@ -22,7 +20,7 @@ namespace disp
 		path& operator()(vec2 p);
 		path& operator()(double x, double y);
 
-		operator sf::ConvexShape&();
+		operator const sf::ConvexShape&();
 	};
 
 	void border_path(const path& p, int co = 0xffffff, size_t width = 1);
