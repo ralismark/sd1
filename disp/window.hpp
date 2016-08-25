@@ -2,8 +2,10 @@
 
 #include <sfml/graphics/renderwindow.hpp>
 #include <sfml/graphics/color.hpp>
+
 #include "core/runtime.hpp"
 #include "userctl/keycode.hpp"
+#include "userctl/cursor.hpp"
 
 namespace disp
 {
@@ -30,14 +32,24 @@ namespace disp
 			enum_max
 		};
 
+		enum struct cur_event
+		{
+			button_down,
+			button_up,
+
+			enum_max
+		};
+
 		static const size_t width = 800;
 		static const size_t height = 600;
 
 		static window* instance; // One and only instance
 	public: // Vars
 		sf::RenderWindow sf_win;
+
 		sig<window::win_event> win_events; // Sends window::event
-		sig<window::kbd_event> kbd_events;
+		sig<window::kbd_event, userctl::key> kbd_events;
+		sig<window::cur_event, userctl::button> cur_events;
 
 		bool open;
 	public: // Methods

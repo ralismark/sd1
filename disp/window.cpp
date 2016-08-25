@@ -49,12 +49,21 @@ namespace disp
 			case sf::Event::GainedFocus:
 				win_events(win_event::gain_focus);
 				break;
+
 			case sf::Event::KeyPressed:
-				kbd_events(kbd_event::key_down);
+				kbd_events(kbd_event::key_down, static_cast<userctl::key>(event.key.code));
 				break;
 			case sf::Event::KeyReleased:
-				kbd_events(kbd_event::key_up);
+				kbd_events(kbd_event::key_up, static_cast<userctl::key>(event.key.code));
 				break;
+
+			case sf::Event::MouseButtonPressed:
+				cur_events(cur_event::button_down, static_cast<userctl::button>(event.mouseButton.button));
+				break;
+			case sf::Event::MouseButtonReleased:
+				cur_events(cur_event::button_up, static_cast<userctl::button>(event.mouseButton.button));
+				break;
+
 			default:
 				; // We don't care about the other events right now
 			}
