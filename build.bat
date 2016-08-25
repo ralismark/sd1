@@ -5,6 +5,7 @@ goto :main
 goto :eof
 
 
+
 :main
 
 	set "tmpfile=%tmp%\-out-build-"
@@ -25,13 +26,13 @@ goto :eof
 	type %tmpfile%1 | findstr /L /C:"<<" | sed "s/.*<<\(.*\)>>.*/\1/g" > %tmpfile%2
 
 	echo:Build done:
-	
+
 	set cnt=0
 	for /F %%f in (%tmpfile%2) do (
 		set /A cnt += 1
 		echo: !cnt!^) output %%f
-		for /F "usebackq" %%d in (`stat -c "%%Y" %%f`) do (
-			sqlite3 .tup\db "update node set mtime=%%d where type=4 and name='%%~nxf'"
+		for /F "usebackq" %%d in (`stat -c "%%Y" "%~dp0%%f"`) do (
+			sqlite3 "%~dp0.tup\db" "update node set mtime=%%d where type=4 and name='%%~nxf'"
 		)
 	)
 
@@ -58,7 +59,7 @@ goto :eof
 :force
 
 	echo:Force rebuilding
-	for /R %%i in (core\* debug\* disp\* math\* userctl\* world\*) do @touch "%%i"
+	for /R %%i in ("%~dp0*.?pp") do @touch "%%i"
 	echo:
 
 	goto :build

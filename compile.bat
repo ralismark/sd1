@@ -1,1 +1,1 @@
-@%cxx% %cflags% -I. -isystem external lib.a %* lib/sfml-audio.lib lib/sfml-graphics.lib lib/sfml-main.lib lib/sfml-network.lib lib/sfml-system.lib lib/sfml-window.lib
+@%cxx% %cflags% -I"%~dp0." -isystem "%~dp0external" "%~dp0build\lib.a" %* "%~dp0lib\multi.lib"
