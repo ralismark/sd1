@@ -22,10 +22,15 @@ goto :eof
 
 :build
 
-	( tup || goto :fail ) > %tmpfile%1
+	( tup || set "ret=1" ) > %tmpfile%1
 	type %tmpfile%1 | findstr /L /C:"<<" | sed "s/.*<<\(.*\)>>.*/\1/g" > %tmpfile%2
 
-	echo:Build done:
+	if "%ret%" == "1" (
+		echo:
+		echo:Partial build!
+	) else (
+		echo:Build done:
+	)
 
 	set cnt=0
 	for /F %%f in (%tmpfile%2) do (
@@ -42,15 +47,6 @@ goto :eof
 		echo:nothing happened...
 		goto :eof
 	)
-
-goto :eof
-
-
-
-:fail
-
-	echo:Build failed!
-	exit /b 1
 
 goto :eof
 
