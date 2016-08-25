@@ -14,4 +14,7 @@ namespace disp
 	void fill_rect(rect<double> r, fill_style style = {});
 	void border_rect(rect<double> r, edge_style style = {});
 
+	void curve(path p, edge_style style = {});
+	void polygon(path p, fill_style style = {}); // assumes to be convex
+
 }

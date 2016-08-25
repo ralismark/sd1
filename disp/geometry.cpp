@@ -3,8 +3,12 @@
 #include "window.hpp"
 
 #include <cmath>
+
 #include <sfml/graphics/convexshape.hpp>
 #include <sfml/graphics/rectangleshape.hpp>
+#include <sfml/graphics/vertex.hpp>
+#include <sfml/graphics/vertexarray.hpp>
+#include <sfml/graphics/convexshape.hpp>
 
 namespace disp
 {
@@ -58,6 +62,32 @@ namespace disp
 		rs.setOutlineThickness(style.width);
 
 		stdwin->draw(rs);
+	}
+
+	void curve(path p, edge_style style)
+	{
+		sf::Color c = as_color(style.co);
+		sf::VertexArray va { sf::LinesStrip, p.pts.size() };
+
+		for(size_t i = 0; i < p.pts.size(); ++i) {
+			va[i].color = c;
+			va[i].position = { p.pts[i]->x, p.pts[i]->y };
+		}
+
+		stdwin->draw(va);
+	}
+
+	void polygon(path p, fill_style style)
+	{
+		sf::ConvexShape cs { p.pts.size() };
+
+		for(size_t i = 0; i < p.pts.size(); ++i) {
+			cs.setPoint(i, { p.pts[i]->x, p.pts[i]->y });
+		}
+
+		cs.setFillColor(as_color(style.co));
+
+		stdwin->draw(cs);
 	}
 
 }
