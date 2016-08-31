@@ -40,7 +40,7 @@ namespace disp
 			enum_max
 		};
 
-		static const size_t width = 800;
+		static const size_t width = 1024;
 		static const size_t height = 600;
 
 		static window* instance; // One and only instance
