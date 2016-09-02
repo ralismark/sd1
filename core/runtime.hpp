@@ -9,6 +9,7 @@
 namespace rt
 {
 
+	/* frame count, beginning at 0 and incremented after each frame */
 	extern size_t frame_no; // at 30fps, int won't overflow until running for about 2 years
 
 	// Sig order:
@@ -20,11 +21,12 @@ namespace rt
 	// 6. frame_end   (end stuff?)
 	//    (SFML does framerate limiting)
 
+	/* hooks for the game look */
 	extern sig<> frame, frame_early, frame_late, render, post_render, frame_end;
 
 	// Function to be executed by window loop
 	void loop();
-	
+
 	// Frame-based timing
 	class frame_event
 	{
@@ -44,6 +46,8 @@ namespace rt
 	};
 
 	// Exec after n frames
+	/* executes fn with data after delay frames, during the frame signal */
 	void frame_delay(size_t delay, frame_event::fn_type fn, void* data = 0);
+	/* executes fn with data for each frame for count frames */
 	void frame_repeat(size_t count, frame_event::fn_type fn, void* data = 0);
 }
