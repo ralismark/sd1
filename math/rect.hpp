@@ -55,7 +55,7 @@ public:
 	rect();
 	rect(const T& w, const T& h); // w*h from origin
 	rect(const gvec<T, 2>& sz); // Same as above
-	
+
 	rect(const T& ox, const T& oy, const T& w, const T& h); // [ox,oy] to [ox+w,oy+h]. I agree that it is kinda inconsistent
 	rect(const gvec<T, 2>& o, const gvec<T, 2>& sz); // As above
 
@@ -67,7 +67,7 @@ public:
 	access* operator->();
 	const access* operator->() const;
 
-	// implementation 
+	// implementation
 	bool operator==(const rect<T>& other) const;
 	bool operator!=(const rect<T>& other) const;
 

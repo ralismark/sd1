@@ -23,7 +23,7 @@ public:
 	void rebind(size_t i, std::function<T(void)> upd = nullptr);
 
 	gvec<T, N> operator+() const;
-	
+
 	operator gvec<T, N>() const;
 };
 

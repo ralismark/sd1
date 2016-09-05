@@ -80,7 +80,7 @@ public: // Publics
 	void emit(T... args);
 
 	// Alias for emit
-	void operator()(T... args); 
+	void operator()(T... args);
 };
 
 // Ensures that the signal never emits to a dead slot
