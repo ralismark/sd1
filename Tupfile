@@ -12,5 +12,5 @@ inc += -isystem external
 # !cxx = |> ^ piping <<%o>> ^ cat %f > %o |>
 # !cxx = |> ^ touching <<%o>> ^ touch %o |>
 
-: foreach core\*.cpp debug\*.cpp disp\*.cpp math\*.cpp userctl\*.cpp world\*.cpp |> !cxx |> build\%B.o {obj}
+: foreach core\*.cpp debug\*.cpp disp\*.cpp math\*.cpp userctl\*.cpp world\*.cpp entity\*.cpp |> !cxx |> build\%B.o {obj}
 : {obj} |> ^ creating <<%o>> ^ llvm-ar rs %o %f |> build\lib.a
