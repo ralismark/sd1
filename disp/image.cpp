@@ -132,6 +132,8 @@ namespace disp
 
 	void draw_texture(const texture& tex, vec2 p, vec2 scale)
 	{
+		p = as_scr_coords(p);
+
 		sf::Sprite sprite;
 
 		sprite.setTexture(tex.resource);

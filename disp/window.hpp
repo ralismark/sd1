@@ -6,6 +6,7 @@
 #include "core/runtime.hpp"
 #include "userctl/keycode.hpp"
 #include "userctl/cursor.hpp"
+#include "math/vec.hpp"
 
 namespace disp
 {
@@ -71,4 +72,8 @@ namespace disp
 	sf::Color as_color(int argb);
 	int as_int_color(sf::Color co);
 
+	// screen origin is top left corner, increasing down and right
+	// location origin is bottom left corner, increasing up and right
+	vec2 as_scr_coords(vec2 p);
+	vec2 as_loc_corrds(vec2 p);
 }

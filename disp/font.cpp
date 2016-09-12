@@ -60,6 +60,8 @@ namespace disp
 
 	vec2 draw_text(const text_style& ts, vec2 p, const char* str)
 	{
+		p = as_scr_coords(p);
+
 		sf::Text t = ts;
 		t.setString(str);
 		t.setPosition(p->x, p->y);
