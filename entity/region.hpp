@@ -1,0 +1,33 @@
+#pragma once
+
+#include "predecl.hpp"
+#include "entity.hpp"
+
+#include "math/vec.hpp"
+#include "math/rect.hpp"
+
+#include <set>
+#include <memory>
+
+class region
+{
+public: // statics
+	struct object_sort // functor
+	{
+		bool operator()(entity* left, entity* right) const
+		{
+			return left->render_order < right->render_order;
+		}
+	};
+public: // variables
+	std::set<entity*, object_sort> objects; // free sorting
+
+	rect<double> area;
+public: // methods
+	// add/remove an owned entity
+	entity* create();
+	bool destroy(entity* obj); // only if we own it
+	// add/remove an existing entity
+	entity* attach(entity* obj);
+	bool detach(entity* obj); // true if actually removed
+};
