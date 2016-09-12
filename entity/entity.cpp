@@ -3,9 +3,14 @@
 #include "region.hpp"
 
 entity::entity()
-	: parent(nullptr), area(), vel()
+	: parent(nullptr), area(), vel(), tex()
 {
 	area.retain_size = area.retain_center = true;
+}
+
+void entity::step()
+{
+	area->center += vel;
 }
 
 region* entity::transfer(region* new_parent)
@@ -36,4 +41,10 @@ region* entity::transfer(region* new_parent)
 	}
 
 	return parent;
+}
+
+void entity::render(vec2 offset)
+{
+	vec2 scale = area->size / tex.resource->size().cast<double>();
+	disp::draw_texture(tex, area->min + offset, scale);
 }

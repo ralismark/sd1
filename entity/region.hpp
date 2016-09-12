@@ -5,6 +5,7 @@
 
 #include "math/vec.hpp"
 #include "math/rect.hpp"
+#include "disp/image.hpp"
 
 #include <set>
 #include <memory>
@@ -23,7 +24,11 @@ public: // variables
 	std::set<entity*, object_sort> objects; // free sorting
 
 	rect<double> area;
+	std::shared_ptr<disp::texture> bg;
 public: // methods
+	// general operations
+	void render(vec2 offset = { 0, 0 } );
+	void step();
 	// add/remove an owned entity
 	entity* create();
 	bool destroy(entity* obj); // only if we own it
