@@ -143,4 +143,9 @@ namespace disp
 		stdwin->draw(sprite);
 	}
 
+	void draw_texture(const texture& tex, rect<double> area)
+	{
+		draw_texture(tex, area->min, area->size / tex.size().cast<double>());
+	}
+
 }

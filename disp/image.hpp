@@ -68,5 +68,6 @@ namespace disp
 	};
 
 	void draw_texture(const texture& tex, vec2 p, vec2 scale = {1.0, 1.0});
+	void draw_texture(const texture& tex, rect<double> area);
 
 }
