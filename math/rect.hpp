@@ -76,6 +76,9 @@ public:
 
 	template <typename T>
 	friend std::ostream& operator<<(std::ostream& os, const rect<T>& r);
+
+	template <typename C>
+	rect<C> cast() const;
 };
 
 #include "rect.tpp"

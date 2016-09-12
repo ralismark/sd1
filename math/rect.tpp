@@ -189,3 +189,11 @@ std::ostream& operator<<(std::ostream& os, const rect<T>& r)
 {
 	return os << "[ " << r->x1 << ", " << r->y1 << " -> " << r->x2 << ", " << r->y2 << " ]";
 }
+
+template <typename T>
+template <typename C>
+rect<C> rect<T>::cast() const
+{
+	rect<C> other = { (*this)->min.cast<C>(), (*this)->size.cast<C>() };
+	return other;
+}
