@@ -7,7 +7,7 @@
 entity::entity()
 	: parent(nullptr), area(), vel(), tex(), com()
 {
-	area.retain_size = area.retain_center = true;
+	area.keep_size = area.keep_center = true;
 }
 
 void entity::step()
@@ -76,6 +76,8 @@ bool entity::del_cap(cap* obj)
 
 void entity::render(vec2 offset)
 {
-	vec2 scale = area->size / tex.resource->size().cast<double>();
-	disp::draw_texture(tex, area->min + offset, scale);
+	rect<double> cpy = area;
+	cpy.translate(offset);
+
+	disp::draw_texture(tex, cpy);
 }

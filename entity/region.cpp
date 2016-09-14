@@ -2,8 +2,9 @@
 
 void region::render(vec2 offset)
 {
-	vec2 scale = area->size / bg->size().cast<double>();
-	disp::draw_texture(*bg, area->min + offset, scale);
+	rect<double> cpy = area;
+	cpy.translate(offset);
+	disp::draw_texture(*bg, cpy);
 
 	for(auto&& it : objects) {
 		it->render(offset);
