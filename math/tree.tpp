@@ -276,7 +276,7 @@ tree<T>& tree<T>::operator=(tree<T>&& other)
 {
 	if(&other != this) {
 		this->clear();
-		
+
 		this->reparent(&head, &other.head);
 		head.value = other.head.value;
 	}

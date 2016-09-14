@@ -132,6 +132,8 @@ namespace disp
 
 	void draw_texture(const texture& tex, vec2 p, vec2 scale)
 	{
+		p = as_scr_coords(p);
+
 		sf::Sprite sprite;
 
 		sprite.setTexture(tex.resource);
@@ -139,6 +141,11 @@ namespace disp
 		sprite.setScale(scale->x, scale->y);
 
 		stdwin->draw(sprite);
+	}
+
+	void draw_texture(const texture& tex, rect<double> area)
+	{
+		draw_texture(tex, area->min, area->size / tex.size().cast<double>());
 	}
 
 }

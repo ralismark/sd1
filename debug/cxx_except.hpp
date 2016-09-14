@@ -10,13 +10,13 @@ namespace cxx_except
 	// http://www.codeproject.com/Articles/175482/Compiler-Internals-How-Try-Catch-Throw-are-Interpr
 	// http://members.gamedev.net/sicrane/articles/exception.html
 
-	typedef void (__cdecl * _PMFN)(void); // despite the static typing, function pointers of 
+	typedef void (__cdecl * _PMFN)(void); // despite the static typing, function pointers of
 	//   type _PMFN are usually used as pointers to other
 	//   function types
 
 	struct _PMD {
 		int mdisp;  // member offset
-		int pdisp;  // offset of the vtable 
+		int pdisp;  // offset of the vtable
 		int vdisp;  // offset to displacment inside the vtable
 	};
 

@@ -48,14 +48,14 @@ public: // Statics
 private: // Variables
 	access ac; // From [x1, y2] to [x2, y2]
 	bool dirty; // Set after access, reset on fix
-
-	bool retain_size; // fix other values based on size. evaluate this first
-	bool retain_center; // fix based on center
+public:
+	bool keep_size; // fix other values based on size. evaluate this first
+	bool keep_center; // fix based on center
 public:
 	rect();
 	rect(const T& w, const T& h); // w*h from origin
 	rect(const gvec<T, 2>& sz); // Same as above
-	
+
 	rect(const T& ox, const T& oy, const T& w, const T& h); // [ox,oy] to [ox+w,oy+h]. I agree that it is kinda inconsistent
 	rect(const gvec<T, 2>& o, const gvec<T, 2>& sz); // As above
 
@@ -67,7 +67,7 @@ public:
 	access* operator->();
 	const access* operator->() const;
 
-	// implementation 
+	// implementation
 	bool operator==(const rect<T>& other) const;
 	bool operator!=(const rect<T>& other) const;
 
@@ -76,6 +76,12 @@ public:
 
 	template <typename T>
 	friend std::ostream& operator<<(std::ostream& os, const rect<T>& r);
+
+	template <typename C>
+	rect<C> cast() const;
+
+	void translate(gvec<T, 2> dist);
+	void resize(gvec<T, 2> size);
 };
 
 #include "rect.tpp"

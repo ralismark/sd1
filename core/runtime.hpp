@@ -24,7 +24,7 @@ namespace rt
 
 	// Function to be executed by window loop
 	void loop();
-	
+
 	// Frame-based timing
 	class frame_event
 	{

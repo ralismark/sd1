@@ -112,4 +112,16 @@ namespace disp
 		return red | green | blue | alpha;
 	}
 
+	vec2 as_scr_coords(vec2 p)
+	{
+		double new_y = window::height - p->y;
+		return { p->x, new_y };
+	}
+
+	vec2 as_loc_coords(vec2 p)
+	{
+		// symmetric!
+		return as_scr_coords(p);
+	}
+
 }

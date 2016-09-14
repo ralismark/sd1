@@ -10,7 +10,7 @@ public: // Statics
 	struct res_entry
 	{
 		std::shared_ptr<Val> res;
-		
+
 		// size_t footprint; // For memory consumption limiting
 		int prio; // Custom value
 		res_entry(Val* init = 0, int plevel = 0);
