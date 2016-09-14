@@ -10,7 +10,7 @@ rect<T>::rect()
 		T(), T(),
 		T(), T()
 	    ), dirty(false)
-	, retain_size(false), retain_center(false)
+	, keep_size(false), keep_center(false)
 { ; }
 
 template <typename T>
@@ -21,7 +21,7 @@ rect<T>::rect(const T& w, const T& h)
 		w,     h,
 		w / 2, h / 2
 	    ), dirty(true)
-	, retain_size(false), retain_center(false)
+	, keep_size(false), keep_center(false)
 {
 	this->fix();
 }
@@ -39,7 +39,7 @@ rect<T>::rect(const T& ox, const T& oy, const T& w, const T& h)
 		w,          h,
 		ox + w / 2, oy + h / 2
 	    ), dirty(true)
-	, retain_size(false), retain_center(false)
+	, keep_size(false), keep_center(false)
 {
 	this->fix();
 }
@@ -52,27 +52,27 @@ rect<T>::rect(const gvec<T, 2>& o, const gvec<T, 2>& sz)
 template <typename T>
 rect<T>::rect(const rect<T>& other)
 	: ac(other.ac), dirty(true)
-	, retain_size(other.retain_size), retain_center(other.retain_center) // For fixing
+	, keep_size(other.keep_size), keep_center(other.keep_center) // For fixing
 {
 	this->fix();
-	retain_size = retain_center = false;
+	keep_size = keep_center = false;
 }
 
 template <typename T>
 rect<T>& rect<T>::operator=(const rect<T>& other)
 {
-	bool old_retain_size = retain_size;
-	bool old_retain_center = retain_center;
+	bool old_keep_size = keep_size;
+	bool old_keep_center = keep_center;
 
-	retain_size = other.retain_size;
-	retain_cetner = other.retain_center;
+	keep_size = other.keep_size;
+	keep_cetner = other.keep_center;
 
 	dirty = other.dirty;
 	ac = other.ac;
 	this->fix();
 
-	retain_size = old_retain_size;
-	retain_center = old_retain_center;
+	keep_size = old_keep_size;
+	keep_center = old_keep_center;
 
 	return *this;
 }
@@ -102,14 +102,14 @@ rect<T>& rect<T>::fix()
 		}
 
 		// fix size
-		if(retain_size) {
+		if(keep_size) {
 			ac.max = ac.min + ac.size;
 		} else {
 			ac.size = ac.max - ac.min;
 		}
 
 		// fix center
-		if(retain_center) {
+		if(keep_center) {
 			ac.min = ac.center - ac.size / T(2);
 			ac.max = ac.center + ac.size / T(2);
 		} else {
@@ -196,4 +196,24 @@ rect<C> rect<T>::cast() const
 {
 	rect<C> other = { (*this)->min.cast<C>(), (*this)->size.cast<C>() };
 	return other;
+}
+
+template <typename T>
+void rect<T>::translate(gvec<T, 2> dist)
+{
+	if(keep_center) {
+		(*this)->center += dist;
+	} else {
+		(*this)->min += dist;
+	}
+}
+
+template <typename T>
+void rect<T>::resize(gvec<T, 2> size)
+{
+	if(keep_size) {
+		(*this)->size = size;
+	} else {
+		(*this)->max = (*this)->min + size;
+	}
 }

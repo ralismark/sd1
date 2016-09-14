@@ -49,8 +49,8 @@ private: // Variables
 	access ac; // From [x1, y2] to [x2, y2]
 	bool dirty; // Set after access, reset on fix
 public:
-	bool retain_size; // fix other values based on size. evaluate this first
-	bool retain_center; // fix based on center
+	bool keep_size; // fix other values based on size. evaluate this first
+	bool keep_center; // fix based on center
 public:
 	rect();
 	rect(const T& w, const T& h); // w*h from origin
@@ -79,6 +79,9 @@ public:
 
 	template <typename C>
 	rect<C> cast() const;
+
+	void translate(gvec<T, 2> dist);
+	void resize(gvec<T, 2> size);
 };
 
 #include "rect.tpp"
