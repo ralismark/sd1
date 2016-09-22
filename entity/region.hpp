@@ -17,7 +17,10 @@ public: // statics
 	{
 		bool operator()(entity* left, entity* right) const
 		{
-			return left->render_order < right->render_order;
+			if(left->render_order != right->render_order) {
+				return left->render_order < right->render_order;
+			}
+			return left < right;
 		}
 	};
 public: // variables
