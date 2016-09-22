@@ -1,6 +1,7 @@
 #include "capability.hpp"
 
-cap::~cap() // blank basically
+cap::cap(entity* owner)
+	: parent(owner)
 { ; }
 
 bool cap::filter(int id) const

@@ -34,7 +34,13 @@ public: // methods
 
 	void event(int id, uintptr_t data); // sends data to all capabilities
 	template <typename T, typename... A> // user provides template T - it's the cap class
-	cap* add_cap(A... args);             // use like: foo.add_cap<bar>(1)
+	cap* add_cap(A... args)              // use like: foo.add_cap<bar>(1)
+	{
+		cap* obj = new T(args...);
+		obj->parent = this;
+		com.push_back(obj);
+		return obj;
+	}
 	bool del_cap(cap* obj);
 
 	void render(vec2 offset = { 0, 0 });

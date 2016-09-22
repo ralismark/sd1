@@ -54,14 +54,6 @@ void entity::event(int id, uintptr_t data)
 	}
 }
 
-template <typename T, typename... A>
-cap* entity::add_cap(A... args)
-{
-	cap* obj = new T(args...);
-	com.push_back(obj);
-	return obj;
-}
-
 bool entity::del_cap(cap* obj)
 {
 	auto it = std::find(com.begin(), com.end(), obj);

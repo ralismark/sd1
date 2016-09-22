@@ -30,8 +30,9 @@ public: // statics
 public: // variables
 	entity* parent;
 public: // methods
-	virtual ~cap(); // default, for OO
+	cap(entity* owner = nullptr);
+	virtual ~cap() = default; // default, for OO
 
 	virtual bool filter(int id) const; // filters events to responder, defaults to accept all
-	virtual void responder(int id, uintptr_t data) const = 0;
+	virtual void responder(int id, uintptr_t data) = 0;
 };
