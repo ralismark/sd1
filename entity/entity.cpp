@@ -10,6 +10,14 @@ entity::entity()
 	area.keep_size = area.keep_center = true;
 }
 
+entity::~entity()
+{
+	parent->detach(this);
+	for(auto&& it : com) {
+		delete it;
+	}
+}
+
 void entity::step()
 {
 	area->center += vel;
