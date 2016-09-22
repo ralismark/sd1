@@ -9,6 +9,8 @@
 
 #include <set>
 #include <memory>
+#include <utility>
+#include <vector>
 
 class region
 {
@@ -32,6 +34,7 @@ public: // methods
 	// general operations
 	void render(vec2 offset = { 0, 0 } );
 	void step();
+	std::vector<std::pair<entity*, entity*>> check_collision() const;
 	// add/remove an owned entity
 	entity* create();
 	bool destroy(entity* obj); // only if we own it
