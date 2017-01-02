@@ -150,6 +150,35 @@ bool gvec<T, N>::operator!=(const gvec<T, N>& other) const
 }
 
 template <typename T, size_t N>
+bool gvec<T, N>::operator<(const gvec<T, N>& other) const
+{
+	for(size_t i = 0; i < N; ++i) {
+		if(vals[i] != other[i]) {
+			return vals[i] < other[i];
+		}
+	}
+	return false;
+}
+
+template <typename T, size_t N>
+bool gvec<T, N>::operator>(const gvec<T, N>& other) const
+{
+	return other < *this;
+}
+
+template <typename T, size_t N>
+bool gvec<T, N>::operator<=(const gvec<T, N>& other) const
+{
+	return !(*this > other);
+}
+
+template <typename T, size_t N>
+bool gvec<T, N>::operator>=(const gvec<T, N>& other) const
+{
+	return !(*this < other);
+}
+
+template <typename T, size_t N>
 typename detail::access<T, N>::type* gvec<T, N>::operator->()
 {
 	return &access;

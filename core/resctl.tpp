@@ -88,7 +88,6 @@ void res_ctl<Val, Key>::cleanup(int n)
 					--n;
 				}
 				auto ptr = it++;
-				std::cout << "Clean " << it->first << '\n';
 
 				this->unload(ptr->first);
 			} else {
@@ -100,7 +99,6 @@ void res_ctl<Val, Key>::cleanup(int n)
 			if(it->second.res.unique()) {
 				--n;
 				auto ptr = it++; // Avoid invalid iterators
-				std::cout << "Clean " << ptr->first << '\n';
 
 				this->unload(ptr->first);
 			} else {

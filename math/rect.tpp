@@ -28,7 +28,7 @@ rect<T>::rect(const T& w, const T& h)
 
 template <typename T>
 rect<T>::rect(const gvec<T, 2>& sz)
-	: rect(sz.x, sz.y)
+	: rect(sz->x, sz->y)
 { ; }
 
 template <typename T>
@@ -46,7 +46,7 @@ rect<T>::rect(const T& ox, const T& oy, const T& w, const T& h)
 
 template <typename T>
 rect<T>::rect(const gvec<T, 2>& o, const gvec<T, 2>& sz)
-	: rect(o.x, o.y, sz.x, sz.y)
+	: rect(o->x, o->y, sz->x, sz->y)
 { ; }
 
 template <typename T>
@@ -65,7 +65,7 @@ rect<T>& rect<T>::operator=(const rect<T>& other)
 	bool old_keep_center = keep_center;
 
 	keep_size = other.keep_size;
-	keep_cetner = other.keep_center;
+	keep_center = other.keep_center;
 
 	dirty = other.dirty;
 	ac = other.ac;
@@ -149,6 +149,52 @@ bool rect<T>::operator==(const rect<T>& other) const
 		auto right = other;
 		return left == right;
 	}
+}
+
+template <typename T>
+bool rect<T>::operator!=(const rect<T>& other) const
+{
+	return !(*this == other);
+}
+
+template <typename T>
+bool rect<T>::operator<(const rect<T>& other) const
+{
+	if(!dirty && !other.dirty) {
+		if(ac.min != other->min) {
+			return ac.min < other->min;
+		} else {
+			return ac.max < other->max;
+		}
+	} else if(dirty && !other.dirty) { // We are dirty
+		auto cpy = *this;
+		return cpy == other;
+	} else if(!dirty && other.dirty) { // Other is dirty
+		auto cpy = other;
+		return *this == cpy;
+	} else { // Both dirty
+		auto left = *this;
+		auto right = other;
+		return left == right;
+	}
+}
+
+template <typename T>
+bool rect<T>::operator>(const rect<T>& other) const
+{
+	return other < *this;
+}
+
+template <typename T>
+bool rect<T>::operator<=(const rect<T>& other) const
+{
+	return !(*this > other);
+}
+
+template <typename T>
+bool rect<T>::operator>=(const rect<T>& other) const
+{
+	return !(*this < other);
 }
 
 template <typename T>

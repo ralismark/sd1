@@ -75,5 +75,5 @@ namespace disp
 	// screen origin is top left corner, increasing down and right
 	// location origin is bottom left corner, increasing up and right
 	vec2 as_scr_coords(vec2 p);
-	vec2 as_loc_corrds(vec2 p);
+	vec2 as_loc_coords(vec2 p);
 }

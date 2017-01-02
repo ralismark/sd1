@@ -70,6 +70,10 @@ public:
 	// implementation
 	bool operator==(const rect<T>& other) const;
 	bool operator!=(const rect<T>& other) const;
+	bool operator<(const rect<T>& other) const;
+	bool operator>(const rect<T>& other) const;
+	bool operator<=(const rect<T>& other) const;
+	bool operator>=(const rect<T>& other) const;
 
 	bool contains(const gvec<T, 2>& p, bool permit_eq = false) const; // permit_eq means that true is still returned if edges overlap
 	bool overlaps(const rect<T>& r, bool permit_eq = false) const; // permit_eq as with contains

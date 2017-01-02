@@ -6,7 +6,7 @@ namespace disp
 {
 
 	texlist::texlist()
-		: resource(real_resource), real_resource(0), selected(id())
+		: /*resource(real_resource), real_resource(0),*/ selected(id())
 		, list({ {id(), 0}, }) // id() is still valid
 	{ ; }
 
@@ -26,7 +26,7 @@ namespace disp
 		}
 
 		selected = tex;
-		return real_resource = list[tex];
+		return /*real_resource =*/ list[tex];
 	}
 
 	texlist::res_ptr texlist::next()
@@ -44,7 +44,7 @@ namespace disp
 	{
 		list[tex] = res;
 		if(tex == selected) {
-			real_resource = list[tex];
+			//real_resource = list[tex];
 		}
 		return res;
 	}
@@ -76,14 +76,14 @@ namespace disp
 		return selected;
 	}
 
-	texlist::operator texlist::res_ptr() const
+	texlist::operator texlist::res_ptr()
 	{
-		return real_resource;
+		return list[selected];
 	}
 
-	texlist::operator const texture&() const
+	texlist::operator const texture&()
 	{
-		return *real_resource;
+		return *list[selected];
 	}
 
 }

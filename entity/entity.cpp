@@ -5,7 +5,7 @@
 #include <algorithm>
 
 entity::entity()
-	: parent(nullptr), area(), vel(), tex(), com()
+	: parent(nullptr), area(), vel(), flip_x(false), tex(), com()
 {
 	area.keep_size = area.keep_center = true;
 }
@@ -79,5 +79,13 @@ void entity::render(vec2 offset)
 	rect<double> cpy = area;
 	cpy.translate(offset);
 
-	disp::draw_texture(tex, cpy);
+	if(!flip_x) {
+		disp::draw_texture(tex, cpy);
+	} else {
+		vec2 o = { cpy->max->x, cpy->min->y };
+		vec2 s = cpy->size / (*std::shared_ptr<disp::texture>(tex)).size().cast<double>();
+		s->x *= -1;
+
+		draw_texture(tex, o, s);
+	}
 }

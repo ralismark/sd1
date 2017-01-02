@@ -21,6 +21,7 @@ public: // variables
 	rect<double> area;
 	vec2 vel;
 
+	bool flip_x;
 	disp::texlist tex;
 
 	std::vector<cap*> com; // capability component

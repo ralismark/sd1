@@ -92,6 +92,10 @@ public:
 	// friend gvec<T, N> operator/(const T& other, gvec<T, N> self);
 	bool operator==(const gvec<T, N>& other) const;
 	bool operator!=(const gvec<T, N>& other) const;
+	bool operator<(const gvec<T, N>& other) const;
+	bool operator>(const gvec<T, N>& other) const;
+	bool operator<=(const gvec<T, N>& other) const;
+	bool operator>=(const gvec<T, N>& other) const;
 
 	// Access
 	typename detail::access<T, N>::type* operator->();

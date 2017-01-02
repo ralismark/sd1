@@ -7,6 +7,9 @@ template <typename Val, typename Key>
 class res_ctl
 {
 public: // Statics
+	typedef Val value_type;
+	typedef Key key_type;
+
 	struct res_entry
 	{
 		std::shared_ptr<Val> res;

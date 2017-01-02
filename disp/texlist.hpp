@@ -16,9 +16,9 @@ namespace disp
 		typedef int id;
 		typedef std::shared_ptr<texture> res_ptr;
 	public: // variables
-		const res_ptr& resource; // ref to real_resource
+//		const res_ptr& resource; // ref to real_resource
 	private: // variables
-		res_ptr real_resource;
+//		res_ptr real_resource;
 		id selected;
 		std::map<id, res_ptr> list;
 
@@ -35,8 +35,8 @@ namespace disp
 
 		id state() const;
 
-		operator res_ptr() const;
-		operator const texture&() const;
+		operator res_ptr();
+		operator const texture&();
 	};
 
 }

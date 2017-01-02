@@ -6,6 +6,7 @@
 #include "math/vec.hpp"
 #include "math/rect.hpp"
 #include "disp/image.hpp"
+#include "core/sigslots.hpp"
 
 #include <set>
 #include <memory>
@@ -25,12 +26,17 @@ public: // statics
 			return left < right;
 		}
 	};
+
 public: // variables
 	std::set<entity*, object_sort> objects; // free sorting
 
 	rect<double> area;
 	std::shared_ptr<disp::texture> bg;
+
+	sig<>::slot_id frame, frame_early, frame_late, render_x, post_render, frame_end;
 public: // methods
+	region();
+	~region();
 	// general operations
 	void render(vec2 offset = { 0, 0 } );
 	void step();
@@ -41,4 +47,6 @@ public: // methods
 	// add/remove an existing entity
 	entity* attach(entity* obj);
 	bool detach(entity* obj); // true if actually removed
+	// events
+	void dispatch(int id, uintptr_t data);
 };

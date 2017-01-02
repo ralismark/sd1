@@ -5,7 +5,7 @@ namespace userctl
 
 	enum button
 	{
-		none = 0,
+		none = -1,
 		left, right, middle,
 		extra1, extra2,
 
