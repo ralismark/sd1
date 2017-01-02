@@ -28,7 +28,7 @@ class cap
 {
 public: // statics
 public: // variables
-	entity* parent;
+	entity* const parent; // cannot change to point to something else
 public: // methods
 	cap(entity* owner = nullptr);
 	virtual ~cap() = default; // default, for OO
